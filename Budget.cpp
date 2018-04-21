@@ -367,6 +367,7 @@ void Budget::addNewTransaction() {
             break;
         default:
             cout << "Invalid selection" << endl;
+            exit(1);
     }
     do {
         cout << "Enter the amount of the transaction : " << endl;
@@ -378,7 +379,7 @@ void Budget::addNewTransaction() {
             validTransaction = true;
         }
         else{
-            cout << "Invalid entry please enter valid transaction";
+            cout << "Invalid entry, please a enter valid amount" << endl;
             validTransaction = false;
         }
     }while(!validTransaction);
