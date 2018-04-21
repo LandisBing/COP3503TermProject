@@ -75,6 +75,10 @@ void Budget::parseTransactionData() {
     while (fileData.good()) {
 
         getline(fileData, currentLine);
+        //Prevents the function from crashing if there's a blank line
+        if(currentLine == ""){
+            continue;
+        }
         //parseHelper is the categoryName at this line
         parseHelper = currentLine.substr(0, currentLine.find(' '));
         tempTransaction.setCategory(parseHelper);
@@ -347,7 +351,7 @@ void Budget::addNewTransaction() {
 
     //Saves transaction to the file
     newFileData.open(fileName, ios::app);
-    newFileData << "\n" << newTransaction.getCategory() << " | " << newTransaction.getName() << ": $" << inputAmount
+    newFileData << "\n" << newTransaction.getCategory() << " | " << newTransaction.getName() << " $" << inputAmount
                 << " | " << inputString;
 
 
@@ -419,7 +423,6 @@ void Budget::deleteTransaction() {
         }
         inputDate = dateHelper;
     }
-    cout << inputDate << endl;
 
     //Writes all transactions to the file except the one to be deleted
     for (int i = 0; i < functionTransactions.size() - 1; i++) {
@@ -434,7 +437,8 @@ void Budget::deleteTransaction() {
     //Prevents an extra newline at the end of the file
     if (functionTransactions[functionTransactions.size() - 1].getName().find(inputName) ==
         string::npos || (functionTransactions[functionTransactions.size() - 1].getDate().toString() != inputDate &&
-                         functionTransactions[functionTransactions.size() - 1].getName() == inputName)) {
+                         functionTransactions[functionTransactions.size() - 1].getName().find(inputName) != string::npos)) {
+        //functionTransactions[functionTransactions.size() - 1].getName() == inputName)) {
         functionFile << functionTransactions[functionTransactions.size() - 1].getCategory() << " | "
                      << functionTransactions[functionTransactions.size() - 1].getName() << " $"
                      << functionTransactions[functionTransactions.size() - 1].getAmount() << " | " <<

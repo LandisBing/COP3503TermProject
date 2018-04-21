@@ -1,8 +1,6 @@
 #include <iostream>
 #include "Budget.h"
 #include "ui.h"
-#include "Date.h"
-#include "Quota.h"
 #include "sortmenu.cpp"
 
 using namespace std;
@@ -92,7 +90,7 @@ int main() {
 	BarGraph b;
 	UserInterface u;
 	Transaction t;
-	
+	u.welcomeScreen();
 	
 	vector<string> categoryList;
 	vector<int> moneyAmounts;
@@ -149,35 +147,34 @@ int main() {
 		}
 	}
 
-    string quotaName = mainBudget.getQuotaName();
-	BudgetManipulation sortEverything(quotaName);
 	validInput = false;
 	while (!validInput) {
 		string userMenuInput;
+        string quotaName = mainBudget.getQuotaName();
+        BudgetManipulation sortEverything(quotaName);
 		cout << "+--------------------------------+\n";
 		cout << "|What would you like to do?      |\n";
 		cout << "|================================|\n";
 		cout << "|1. Print                        |\n";
 		cout << "|--------------------------------|\n";
-		cout << "|2. Change budget amount	      |\n";
+		cout << "|2. Add expense or transcation   |\n";
 		cout << "|--------------------------------|\n";
-		cout << "|3. Add expense or transcation   |\n";
+		cout << "|3. Delete expense or transaction|\n";
 		cout << "|--------------------------------|\n";
-		cout << "|4. Delete expense or transaction|\n";
+		cout << "|4. Sort                         |\n";
 		cout << "|--------------------------------|\n";
-		cout << "|5. Sort                         |\n";
+		cout << "|5. Save                         |\n";
 		cout << "|--------------------------------|\n";
-		cout << "|6. Save                         |\n";
+		cout << "|6. Graph                        |\n";
 		cout << "|--------------------------------|\n";
-		cout << "|7. Graph                        |\n";
-		cout << "|--------------------------------|\n";
-		cout << "|8. Exit                         |\n";
+		cout << "|7. Exit                         |\n";
 		cout << "+--------------------------------+\n";
 		cin >> userMenuInput;
 
 		// Sends user input for the menu option chosen to the inputChecker function to ensure the input is a number.
 		// If the input is not valid it will print an error message and reprint the menu.
 		bool validInput = inputChecker(userMenuInput);
+        vector<Transaction> localVector;
 		if (!validInput) {
 			cout << "Invalid input please try again\n";
 		}
@@ -191,31 +188,27 @@ int main() {
 				break;
 
 			case 2:
-				//superfluous
-				break;
-
-			case 3:
 				mainBudget.addNewTransaction();
 				break;
 
-			case 4:
+			case 3:
 				mainBudget.deleteTransaction();
 				break;
 
-			case 5:
+			case 4:
 				SortMenu::sortOption(sortEverything);
 				break;
 
-			case 6:
-				//what to call here?
+			case 5:
+                mainBudget.saveTransactions(sortEverything.transactionVec);
 				break;
 
-			case 7:
-				
+			case 6:
+                //Graph code
 			
 				break;
 
-			case 8:
+			case 7:
 
 				u.closingScreen();
 				return 0;
@@ -228,7 +221,5 @@ int main() {
 		}
 
 	}
-	mainBudget.closeFile();
-
 	return 0;
 }

@@ -57,8 +57,6 @@ private:
     vector<Transaction> mayTransactions;
     vector<Quota> allQuotas;
     deque<Transaction> reminders;
-
-    void parseTransactionData();
     
     void updateReOccurance();
     
@@ -85,6 +83,8 @@ public:
     void setQuotaName(string newName);
 
     void parseQuotaData(string quotaName);
+
+    void parseTransactionData();
 
     void addNewTransaction();
 
