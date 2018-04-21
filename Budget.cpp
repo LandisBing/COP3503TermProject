@@ -298,10 +298,10 @@ void Budget::addNewTransaction() {
     double inputAmount;
 
     //Gets input from the user
-    cout << "Enter the name of the transaction: " << endl;
+    cout << "Enter the name of the transaction: (One Word)" << endl;
     cin >> inputString;
     newTransaction.setName(inputString);
-    cout << "Select the name of the transaction: " << endl;
+    cout << "Select the category of the transaction: " << endl;
     cout << "1. Housing" << endl;
     cout << "2. Entertainment" << endl;
     cout << "3. Food" << endl;
@@ -393,7 +393,7 @@ void Budget::deleteTransaction() {
     vector<Transaction> functionTransactions = functionBudget.getAllTransactions();
     functionBudget.closeFile();
 
-    cout << "What transaction should be deleted?" << endl;
+    cout << "What transaction should be deleted? (One Word)" << endl;
     cin >> inputName;
     cout << "When was this transaction (MM/DD/YYYY)?" << endl;
     cin >> inputDate;
