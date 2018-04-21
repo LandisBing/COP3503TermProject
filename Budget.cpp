@@ -65,6 +65,46 @@ Transaction::Transaction() {
     reOccuring = false;
 }
 
+bool Budget:: transactionInputChecker(string userInput){
+    bool isNum;
+    for (int i = 0; i < userInput.length(); i++) {
+        if (isdigit(userInput[i]) || userInput[i]=='.' && (userInput[i-1]!='.' || userInput[i+1]!='.') ) {
+            isNum = true;
+        }
+        else {
+            isNum = false;
+        }
+    }
+    return isNum;
+}
+
+int Budget:: userInputChecker(){
+    string userInput;
+    int inputConverted;
+    bool isNum = false;
+    bool validEntry =false;
+    while(!validEntry){
+        cin >> userInput;
+    for (int i = 0; i < userInput.length(); i++) {
+        if (isdigit(userInput[i])) {
+            isNum = true;
+        } else {
+            isNum = false;
+        }
+    }
+        if(!isNum){
+            cout << "Invalid entry. Please try again: ";
+            validEntry = false;
+        }
+        else{
+            inputConverted = stoi(userInput);
+            validEntry = true;
+        }
+    }
+        return inputConverted;
+    }
+
+
 //Takes one line of data from the file and puts it into a Transaction object, then adds those objects to the vector
 void Budget::parseTransactionData() {
 
@@ -160,22 +200,6 @@ vector<Transaction> Budget::getAllTransactions() {
         return allTransactions;
     } else {
         cout << "Error: no transactions" << endl;
-    }
-}
-
-vector<Transaction> Budget::getAprilTransactions() {
-    if (!aprilTransactions.empty()) {
-        return aprilTransactions;
-    } else {
-        cout << "Error: no April transactions" << endl;
-    }
-}
-
-vector<Transaction> Budget::getMayTransactions() {
-    if (!mayTransactions.empty()) {
-        return mayTransactions;
-    } else {
-        cout << "Error: no May transactions" << endl;
     }
 }
 
@@ -295,10 +319,11 @@ void Budget::addNewTransaction() {
     string parseHelper;
     ofstream newFileData;
     int userChoice;
-    double inputAmount;
+    string inputAmount;
+    bool validTransaction=false;
 
     //Gets input from the user
-    cout << "Enter the name of the transaction: (One Word)" << endl;
+    cout << "Enter the name of the transaction: (One word) " << endl;
     cin >> inputString;
     newTransaction.setName(inputString);
     cout << "Select the category of the transaction: " << endl;
@@ -343,9 +368,23 @@ void Budget::addNewTransaction() {
         default:
             cout << "Invalid selection" << endl;
     }
-    cout << "Enter the amount of the transaction : " << endl;
-    cin >> inputAmount;
-    newTransaction.setAmount(inputAmount);
+    do {
+        cout << "Enter the amount of the transaction : " << endl;
+        cin >> inputAmount;
+        bool validTransactionEntry = transactionInputChecker(inputAmount);
+        if(validTransactionEntry) {
+            double finalinputAmount = stod(inputAmount);
+            newTransaction.setAmount(finalinputAmount);
+            validTransaction = true;
+        }
+        else{
+            cout << "Invalid entry please enter valid transaction";
+            validTransaction = false;
+        }
+    }while(!validTransaction);
+
+
+
     cout << "Enter the date of the transaction (MM/DD/YYYY): " << endl;
     cin >> inputString;
 
@@ -474,6 +513,7 @@ void Budget::createBudget() {
     //Keeps track of the user's input
     string budgetName;
     int userSpending;
+
     //Creates a new text file to hold the budget
     cout << "Choose a name for your new budget" << endl;
     cin >> budgetName;
@@ -482,32 +522,33 @@ void Budget::createBudget() {
     quotaName = budgetName;
     ofstream budgetFile(budgetName);
     //Allows the user to choose how much they want to spend
+
     cout << "How much do you want to spend on housing?" << endl;
-    cin >> userSpending;
+    userSpending = userInputChecker();
     budgetFile << "Housing | " << userSpending << endl;
     cout << "How much do you want to spend on entertainment?" << endl;
-    cin >> userSpending;
+    userSpending = userInputChecker();
     budgetFile << "Entertainment | " << userSpending << endl;
     cout << "How much do you want to spend on food?" << endl;
-    cin >> userSpending;
+    userSpending = userInputChecker();
     budgetFile << "Food | " << userSpending << endl;
     cout << "How much do you want to spend on transportation?" << endl;
-    cin >> userSpending;
+    userSpending = userInputChecker();
     budgetFile << "Transportation | " << userSpending << endl;
     cout << "How much do you want to spend on medical expenses?" << endl;
-    cin >> userSpending;
+    userSpending = userInputChecker();
     budgetFile << "Medical | " << userSpending << endl;
     cout << "How much do you want to spend on clothing?" << endl;
-    cin >> userSpending;
+    userSpending = userInputChecker();
     budgetFile << "Clothing | " << userSpending << endl;
     cout << "How much do you want to spend on insurance?" << endl;
-    cin >> userSpending;
+    userSpending = userInputChecker();
     budgetFile << "Insurance | " << userSpending << endl;
     cout << "How much do you want to spend on utilities?" << endl;
-    cin >> userSpending;
+    userSpending = userInputChecker();
     budgetFile << "Utilities | " << userSpending << endl;
     cout << "How much do you want to spend on things not listed above?" << endl;
-    cin >> userSpending;
+    userSpending = userInputChecker();
     budgetFile << "Other | " << userSpending;
     //Closes the file after writing to it
     budgetFile.close();
