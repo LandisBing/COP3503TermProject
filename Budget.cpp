@@ -65,7 +65,7 @@ Transaction::Transaction() {
     reOccuring = false;
 }
 
-bool Budget:: transactionInputChecker(string userInput){
+bool Budget::transactionInputChecker(string userInput){
     bool isNum;
     for (int i = 0; i < userInput.length(); i++) {
         if (isdigit(userInput[i]) || userInput[i]=='.' && (userInput[i-1]!='.' || userInput[i+1]!='.') ) {
@@ -78,7 +78,7 @@ bool Budget:: transactionInputChecker(string userInput){
     return isNum;
 }
 
-int Budget:: userInputChecker(){
+int Budget::userInputChecker(){
     string userInput;
     int inputConverted;
     bool isNum = false;

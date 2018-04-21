@@ -64,17 +64,15 @@ private:
     
     vector<Transaction> removeReoccurance(vector<Transaction> input);
     
-    void checkReOccurance(Transaction input);
-    
     Date lastDate();
 
 public:
 
     vector<Transaction> getAllTransactions();
 
-    vector<Transaction> getAprilTransactions();
+    bool transactionInputChecker(string userInput);
 
-    vector<Transaction> getMayTransactions();
+    int userInputChecker();
 
     vector<Quota> getAllQuotas();
 
