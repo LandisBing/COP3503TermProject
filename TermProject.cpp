@@ -14,6 +14,7 @@ bool inputChecker(string userInput) {
             isNum = true;
         } else {
             isNum = false;
+            break;
         }
     }
     return isNum;
