@@ -142,7 +142,6 @@ class BudgetManipulation
 
         explicit BudgetManipulation(string quotaName)
         {
-            //this->myBudget = myBudget;
             Budget myBudget("account.txt");
             myBudget.parseQuotaData(quotaName);
             this->transactionVec = myBudget.getAllTransactions();
@@ -223,6 +222,26 @@ class BudgetManipulation
             {
                 categoryVec[i].setBudgetAmount(quotaVec[i].getSpendLimit());
             }
+        }
+
+        vector<Transaction> getSortedCategories()
+        {
+            vector<Transaction> sortedTranVec;
+            for(auto category: categoryVec)
+            {
+                for(auto expense: category.expenseVec)
+                {
+                    Transaction tran;
+                    tran.setCategory(category.name);
+                    tran.setName(expense.name);
+                    tran.setAmount(expense.amount);
+                    auto date = expense.date;
+                    tran.setDate(date.month, date.day, date.year);
+
+                    sortedTranVec.push_back(tran);
+                }
+            }
+            return sortedTranVec;
         }
 
         //sums total budget of user based on budget amount for each category

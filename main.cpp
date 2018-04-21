@@ -269,8 +269,16 @@ int main(){
                     break;
 
                 case 6:
+                {
+                    vector<Transaction> sortedTransactions = sortEverything.getSortedCategories();
+
+                    for(auto transaction: sortedTransactions)
+                    {
+                        cout << transaction.getCategory() + " | " + transaction.getName() + "$" + to_string(transaction.getAmount()) + " | " + transaction.getDate().toString() + "\n";
+                    }
                     //what to call here?
                     break;
+                }
 
                 case 7:
 
