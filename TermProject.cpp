@@ -159,7 +159,7 @@ int main() {
 		cout << "|================================|\n";
 		cout << "|1. Print                        |\n";
 		cout << "|--------------------------------|\n";
-		cout << "|2. Change budget amount	      |\n";
+		cout << "|2. Change budget amount	  |\n";
 		cout << "|--------------------------------|\n";
 		cout << "|3. Add expense or transcation   |\n";
 		cout << "|--------------------------------|\n";
