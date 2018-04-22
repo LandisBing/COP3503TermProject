@@ -841,6 +841,7 @@ void Budget::changeBudget()
     budgetWrite.close();
 
 }
+
 //Allows the user to use an existing budget
 void Budget::useBudget()
 {
