@@ -82,7 +82,7 @@ public:
 
     vector<int> getTransactionAmounts();
 
-    int getQuotaTotal();
+    int getTransactionsTotal();
 
     vector<string> getCategoryNames();
 
