@@ -1,5 +1,6 @@
 #include "Budget.h"
 #include <algorithm>
+#include <regex>
 using namespace std;
 
 //Getter for transactionName
@@ -85,6 +86,8 @@ int Budget:: userInputChecker(){
     bool validEntry = false;
     while(!validEntry){
         cin >> userInput;
+        userInput.erase(remove_if(userInput.begin(), userInput.end(), ::isspace), userInput.end());
+        cout << userInput;
         for (int i = 0; i < userInput.length(); i++) {
             if (isdigit(userInput[i])) {
                 isNum = true;
@@ -96,7 +99,7 @@ int Budget:: userInputChecker(){
         }
 
         if(!isNum){
-            cout << "Invalid entry. Please try again: ";
+            cout << "Invalid entry. Please try again: \n";
             validEntry = false;
         }
         else{
@@ -109,30 +112,27 @@ int Budget:: userInputChecker(){
 
 string Budget::userDateChecker() {
     string date;
-    bool validDate = false;
-    while(!validDate){
+    bool validDate=false;
+    while(!validDate) {
         cin >> date;
-        if(isdigit(date[0]) && isdigit(date[1]) && date[2]=='/' && isdigit(date[3]) && isdigit(date[4]) && date[5]=='/'
-                && isdigit(date[6]) && isdigit(date[7]) && isdigit(date[8]) && isdigit(date[9])){
-           int month = stoi(date.substr(0,1));
-            int day = stoi(date.substr(3,4));
-            int year = stoi(date.substr(6,9));
-            if((month < 1 || month > 12) || (day < 1 || day > 31) || (year < 1)){
-                cout << "Invalid date entry. Please try again: ";
-                validDate = false;
-            }
-            else{
-                validDate = true;
-            }
-        }
-        else{
-            cout << "Invalid date entry. Please try again: ";
-            validDate = false;
+        date.erase(remove_if(date.begin(), date.end(), ::isspace), date.end());
 
+        regex regDate1("[0][0-9]/[0-2][0-9]/[1-9][0-9]{3}");
+        regex regDate2("[0][0-9]/[3][0-1]/[1-9][0-9]{3}");
+        regex regDate3("[1][0-2]/[0-2][0-9]/[1-9][0-9]{3}");
+        regex regDate4("[1][0-2]/[3][0-1]/[1-9][0-9]{3}");
+        smatch match;
+        if (regex_search(date, match, regDate1) || regex_search(date, match, regDate2)
+            || regex_search(date, match, regDate3) || regex_search(date, match, regDate4)) {
+            validDate = true;
+        } else {
+            cout << "Invalid entry. Please enter a valid date (MM/DD/YYYY)";
+            validDate = false;
         }
     }
     return date;
-    }
+}
+
 
 int Budget::userCategoryChecker() {
     string userInput;
@@ -267,44 +267,13 @@ vector<Transaction> Budget::getAllTransactions() {
         cout << "Error: no transactions" << endl;
     }
 }
-//Gets all quotas
+
 vector<Quota> Budget::getAllQuotas() {
     if (!allQuotas.empty()) {
         return allQuotas;
     } else {
         cout << "Error: no quotas" << endl;
     }
-}
-//Puts all transaction amounts into a single vector for use in graphing
-vector<int> Budget::getTransactionAmounts(){
-    vector<int> transactionAmounts;
-    for (int i = 0; i < allTransactions.size(); i++) {
-        transactionAmounts.push_back(allTransactions[i].getAmount());
-    }
-    return transactionAmounts;
-}
-//Gets the total quota amount for use in graphing
-int Budget::getQuotaTotal() {
-    int quotaTotal = 0;
-    for (int i = 0; i < allQuotas.size(); i++) {
-        quotaTotal += allQuotas[i].getSpendLimit();
-    }
-    return quotaTotal;
-}
-//Puts all category names into a single vector for use in graphing
-vector<string> Budget::getCategoryNames(){
-    vector<string> categoryNames;
-    categoryNames.emplace_back("Housing");
-    categoryNames.emplace_back("Entertainment");
-    categoryNames.emplace_back("Food");
-    categoryNames.emplace_back("Transportation");
-    categoryNames.emplace_back("Medical");
-    categoryNames.emplace_back("Clothing");
-    categoryNames.emplace_back("Insurance");
-    categoryNames.emplace_back("Utilities");
-    categoryNames.emplace_back("Other");
-
-    return categoryNames;
 }
 string Budget::getQuotaName(){
     return quotaName;
@@ -434,7 +403,8 @@ void Budget::addNewTransaction() {
     cout << "8. Utilities" << endl;
     cout << "9. Other" << endl;
 
-    cin >> categoryChoice;
+
+        categoryChoice = userCategoryChecker();
             switch (categoryChoice) {
                 case 1:
                     newTransaction.setCategory("Housing");
@@ -488,7 +458,7 @@ void Budget::addNewTransaction() {
 
 
     cout << "Enter the date of the transaction (MM/DD/YYYY): " << endl;
-    cin >> inputString;
+    inputString = userDateChecker();
 
     //Saves transaction to the file
     newFileData.open(fileName, ios::app);
