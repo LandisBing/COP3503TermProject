@@ -64,7 +64,6 @@ Transaction::Transaction()
     transactionName = "";
     categoryName = "";
     transactionAmount = 0;
-    reOccuring = false;
 }
 
 // Verifies that the transaction amount the user enters is a number
