@@ -1,7 +1,7 @@
 #include "Quota.h"
 
 Quota::Quota() {
-    int spendLimit = 0;
+    spendLimit = 0;
 }
 
 int Quota::getSpendLimit() {

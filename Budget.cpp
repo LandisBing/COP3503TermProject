@@ -155,7 +155,7 @@ vector<Transaction> Budget::getAllTransactions() {
     if (!allTransactions.empty()) {
         return allTransactions;
     } else {
-        cout << "Error: no transactions" << endl;
+        throw "Error: no transactions";
     }
 }
 
@@ -163,7 +163,7 @@ vector<Transaction> Budget::getAprilTransactions() {
     if (!aprilTransactions.empty()) {
         return aprilTransactions;
     } else {
-        cout << "Error: no April transactions" << endl;
+        throw "Error: no April transactions";
     }
 }
 
@@ -171,7 +171,7 @@ vector<Transaction> Budget::getMayTransactions() {
     if (!mayTransactions.empty()) {
         return mayTransactions;
     } else {
-        cout << "Error: no May transactions" << endl;
+        throw "Error: no May transactions";
     }
 }
 
@@ -179,7 +179,7 @@ vector<Quota> Budget::getAllQuotas() {
     if (!allQuotas.empty()) {
         return allQuotas;
     } else {
-        cout << "Error: no quotas" << endl;
+        throw "Error: no quotas";
     }
 }
 string Budget::getQuotaName(){
@@ -188,26 +188,34 @@ string Budget::getQuotaName(){
 void Budget::setQuotaName(string newName) {
     quotaName = newName;
 }
+
+// Updates all the transactions by checking for reoccuring transactions. then sets the reoccurance boolean to true or false
 void Budget::updateReOccurance() {
+	// First step is to make a new transaction vector that i can sort for easier iterability
 	vector<Transaction> transactions = allTransactions;
+	// Defining an operator for the sort method
 	struct myclass {
 		bool operator() (Transaction i, Transaction j) { return (i.getName().compare(j.getName()) < 0);}
 	} myobject;
-
+	// Sorting transactions by name
 	sort(transactions.begin() , transactions.end() , myobject);
 
+	// Define a "gap" or essentialy holds the number or repeated names so the next iteration of the for loop starts at the next named transaction and doesnt run more than once per transaction name
 	int gap = 1;
 	bool reOccurance;
 	int length = transactions.size();
 	for (int i = 0; i < length; i += gap){
 		gap = 1;
 		reOccurance = false;
+		// Now find all transactions of the same name using another for loop
 		for (int j = i+1; j < length; j ++) {
 			if (transactions[i].getName()  == transactions[j].getName()){
+				// Compare all transactions of the same name by amount and day to ensure they are repeated occurences
 				gap++;
 				if (transactions[i].getDate().getDay() == transactions[j].getDate().getDay() && transactions[i].getAmount() == transactions[j].getAmount()){
 					reOccurance = true;
 				}else {
+					// If not the same for any transaction of the same name and same amount then it is not a reoccuring transaction that should be reminded of
 					reOccurance = false;
 					for (int k = gap;  gap < length - i -1; k++){
 						if (transactions[i].getName()  == transactions[k].getName()){
@@ -220,6 +228,7 @@ void Budget::updateReOccurance() {
 				}
 			}
 		}
+		// Now update the transaction in allTransactions to hold the correct occurance value if determined to be a reOccurance
 		if (reOccurance) {
 			for (int j = 0; j < length; j++) {
 				if (allTransactions[j].getName().compare(transactions[i].getName()) == 0){
@@ -231,33 +240,61 @@ void Budget::updateReOccurance() {
 }
 
 void Budget::updateReminders(){
+// Updates the reminders deQue based off the reOccurance. This method should always be run after update reOccurance
+	// Once again we start with a transaction equal to allTransactions so we can sort it and iterate easier
 	vector<Transaction> transactions = allTransactions;
 	struct myclass {
 		bool operator() (Transaction i, Transaction j) { return (i.getDate().getDay() > j.getDate().getDay());}
 	} myobject;
-
+	// I decided to sort by day for simpler iterability of the method
 	sort(transactions.begin() , transactions.end() , myobject);
+	// I needed to remove all reOccuring transactions so i wouldnt add the same transaction to reminders more than once
 	removeReoccurance(transactions);
 	int length = transactions.size();
 	for (int i = 0; i < length; i ++){
+		// For each transaction in transactions
 		if (transactions[i].getOccurance()){
-			reminders.push_back(transactions[i]);
+			// If it is a reOccurance then i save that as a temporary transaction
+			Transaction temp = transactions[i];
+			// I have to make sure that before i push to reminders the month and year are the same as the current month and year.
+			temp.getDate().setMonth(lastDate().getMonth());
+			temp.getDate().setYear(lastDate().getYear());
+			// I then push the transaction to the list of reminders
+			reminders.push_back(temp);
 		}
 	}
 	int lastDay = lastDate().getDay();
 	while(reminders.front().getDate().getDay() < lastDay){
-		reminders.push_back(reminders.front());
+		// Now that reminders has a list of things that need to be reminded i need to ensure we are only reminding for things in the future
+		Transaction temp;
+		temp = reminders.front();
+		// So i make a temporary transaction to hold the front of the deque
+		if (reminders.front().getDate().getMonth() < 11){
+			// Move the month forward
+			temp.getDate().setMonth(reminders.front().getDate().getMonth()+1);
+		}else{
+			// Or move the year forward and reset the month back to january
+			temp.getDate().setMonth(reminders.front().getDate().getMonth()-11);
+			temp.getDate().setYear(reminders.front().getDate().getYear()+1);
+		}
+		// Then i push the temporary transaction to the reminders
+		reminders.push_back(temp);
+		// And pop the front
 		reminders.pop_front();
 	}
 }
 
 vector<Transaction> Budget::removeReoccurance(vector<Transaction> input){
+// Simple method to remove Reoccuring transactions and return a new list of transactions
+	// Important note is that it is assumed the vector is already sorted by name before being entered into the method
 	vector<Transaction> output = input;
 	int length = input.size();
 	int gap = 1;
+	// gap holds the distance between the names in the sorted list
 	for (int i = 0; i < length; i+= gap){
 		gap = 1;
 		for (int j = i+1; j < length; j++){
+			// Checks every other transaction of same name and if it is Reoccuring then it removes it from the vector
 			if (output[i].getName().compare(output[j].getName()) == 0 && output[j].getOccurance()){
 				output.erase(input.begin()+j);
 				length--;
@@ -269,21 +306,26 @@ vector<Transaction> Budget::removeReoccurance(vector<Transaction> input){
 }
 
 Date Budget::lastDate(){
+	// Simple method that returns a Date of the date of the last transaction
 	vector<Transaction> transactions = allTransactions;
 	Date lastDate;
 	lastDate.setDay(0);
 	lastDate.setMonth(0);
 	lastDate.setYear(0);
+	// Initialize a temporary Date and set all the values to 0
 	int length = transactions.size();
 	for (int i = 0; i < length; i++){
+		// I then compare every transactions date with the temporary date
 		if (lastDate.getYear() <= transactions[i].getDate().getYear() && lastDate.getMonth() <= transactions[i].getDate().getMonth() && lastDate.getDay() <= transactions[i].getDate().getDay()){
+			// If the date of the transaction is further in the future
 			lastDate = transactions[i].getDate();
+			// Then last date takes its place and holds the date of the last transaction
 		}
 	}
 	return lastDate;
 }
 
-//Allows a new transaction to be inputted manually
+//Allows a new transaction to be inputed manually
 void Budget::addNewTransaction() {
     //Initializes necessary variables to handle the transaction
     Transaction newTransaction;
@@ -422,7 +464,8 @@ void Budget::deleteTransaction() {
     cout << inputDate << endl;
 
     //Writes all transactions to the file except the one to be deleted
-    for (int i = 0; i < functionTransactions.size() - 1; i++) {
+    int size = functionTransactions.size()-1;
+    for (int i = 0; i < size - 1; i++) {
         if (functionTransactions[i].getName().find(inputName) == string::npos ||
             (functionTransactions[i].getDate().toString() != inputDate &&
              functionTransactions[i].getName().find(inputName) != string::npos)) {
@@ -449,7 +492,8 @@ void Budget::saveTransactions(vector<Transaction> saveVector) {
     fileData.close();
     ofstream saveFile(fileName);
     //Writes content from the vector into the file
-    for (int i = 0; i < saveVector.size() - 1; i++) {
+    int size = saveVector.size();
+    for (int i = 0; i < size - 1; i++) {
         saveFile << saveVector[i].getCategory() << " | " << saveVector[i].getName() << " $"
                  << saveVector[i].getAmount() << " | " << saveVector[i].getDate().toString() << endl;
     }
@@ -515,7 +559,6 @@ void Budget::changeBudget() {
     int userChoice;
     string editCategory;
     string parseHelper;
-    size_t categoryFinder;
 
     //Takes in the transactionName of the user's budget and checks if it exists
     cout << "What is your existing budget called?" << endl;
@@ -601,8 +644,8 @@ void Budget::changeBudget() {
     //Writes quota data to new file
     ofstream budgetWrite;
     budgetWrite.open(budgetName);
-
-    for (int i = 0; i < functionQuota.size()-1; i++) {
+    int size = functionQuota.size();
+    for (int i = 0; i < size-1; i++) {
         budgetWrite << functionQuota[i].getCategory() << " | " << functionQuota[i].getSpendLimit() << endl;
     }
     //Prevents an extra newline character at the end of the file
