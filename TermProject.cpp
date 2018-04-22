@@ -14,7 +14,6 @@ bool inputChecker(string userInput) {
             isNum = true;
         } else {
             isNum = false;
-            break;
         }
     }
     return isNum;
@@ -77,11 +76,6 @@ void welcomeMenu(Budget b) {
 
 int main() {
 
-    //Assign vectors then pass them to necessary sorting functions
-    vector<Transaction> allTest;
-    vector<Transaction> aprilTest;
-    vector<Transaction> mayTest;
-
     Budget mainBudget("account.txt");
 
     //this is how you use the graph code
@@ -134,8 +128,8 @@ int main() {
                     break;
 
                 case 4:
-
-                    break;
+                    //Ends the program
+                    return 0;
 
                 default:
                     cout << "Invalid input please try again";
