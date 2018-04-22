@@ -32,13 +32,12 @@ void Transaction::setAmount(double newAmount) {
     if (newAmount >= 0) {
         transactionAmount = newAmount;
     } else {
-        cout << "Invalid transactionAmount" << endl;
+        cout << "Invalid transaction Amount" << endl;
     }
 }
 
 //Getter for date
 Date Transaction::getDate() {
-
     return transactionDate;
 }
 
@@ -51,10 +50,10 @@ void Transaction::setDate(int month, int day, int year) {
 }
 
 void Transaction::setOccurance(bool input){
-	reOccuring = input;
+    reOccuring = input;
 }
 bool Transaction::getOccurance(){
-	return reOccuring;
+    return reOccuring;
 }
 
 //Transaction constructor
@@ -65,7 +64,7 @@ Transaction::Transaction() {
     reOccuring = false;
 }
 
-bool Budget::transactionInputChecker(string userInput){
+bool Budget:: transactionInputChecker(string userInput){
     bool isNum;
     for (int i = 0; i < userInput.length(); i++) {
         if (isdigit(userInput[i]) || userInput[i]=='.' && (userInput[i-1]!='.' || userInput[i+1]!='.') ) {
@@ -73,25 +72,29 @@ bool Budget::transactionInputChecker(string userInput){
         }
         else {
             isNum = false;
+            break;
         }
     }
     return isNum;
 }
 
-int Budget::userInputChecker(){
+int Budget:: userInputChecker(){
     string userInput;
     int inputConverted;
     bool isNum = false;
-    bool validEntry =false;
+    bool validEntry = false;
     while(!validEntry){
         cin >> userInput;
-    for (int i = 0; i < userInput.length(); i++) {
-        if (isdigit(userInput[i])) {
-            isNum = true;
-        } else {
-            isNum = false;
+        for (int i = 0; i < userInput.length(); i++) {
+            if (isdigit(userInput[i])) {
+                isNum = true;
+
+            } else {
+                isNum = false;
+                break;
+            }
         }
-    }
+
         if(!isNum){
             cout << "Invalid entry. Please try again: ";
             validEntry = false;
@@ -101,8 +104,70 @@ int Budget::userInputChecker(){
             validEntry = true;
         }
     }
-        return inputConverted;
+    return inputConverted;
+}
+
+string Budget::userDateChecker() {
+    string date;
+    bool validDate = false;
+    while(!validDate){
+        cin >> date;
+        if(isdigit(date[0]) && isdigit(date[1]) && date[2]=='/' && isdigit(date[3]) && isdigit(date[4]) && date[5]=='/'
+                && isdigit(date[6]) && isdigit(date[7]) && isdigit(date[8]) && isdigit(date[9])){
+           int month = stoi(date.substr(0,1));
+            int day = stoi(date.substr(3,4));
+            int year = stoi(date.substr(6,9));
+            if((month < 1 || month > 12) || (day < 1 || day > 31) || (year < 1)){
+                cout << "Invalid date entry. Please try again: ";
+                validDate = false;
+            }
+            else{
+                validDate = true;
+            }
+        }
+        else{
+            cout << "Invalid date entry. Please try again: ";
+            validDate = false;
+
+        }
     }
+    return date;
+    }
+
+int Budget::userCategoryChecker() {
+    string userInput;
+    int inputConverted;
+    bool isNum = false;
+    bool validEntry = false;
+    while(!validEntry){
+        cin >> userInput;
+        for (int i = 0; i < userInput.length(); i++) {
+            if (isdigit(userInput[i])) {
+                isNum = true;
+
+            } else {
+                isNum = false;
+                break;
+            }
+        }
+
+        if(isNum) {
+            inputConverted = stoi(userInput);
+            if (inputConverted >= 1 && inputConverted <= 9) {
+                validEntry = true;
+            } else {
+                cout << "\nInvalid input please try again: ";
+                validEntry = false;
+            }
+        }
+        else
+        { cout << "\nInvalid input please try again: ";
+          validEntry = false;
+        }
+    }
+    return inputConverted;
+}
+
 
 
 //Takes one line of data from the file and puts it into a Transaction object, then adds those objects to the vector
@@ -217,98 +282,98 @@ void Budget::setQuotaName(string newName) {
     quotaName = newName;
 }
 void Budget::updateReOccurance() {
-	vector<Transaction> transactions = allTransactions;
-	struct myclass {
-		bool operator() (Transaction i, Transaction j) { return (i.getName().compare(j.getName()) < 0);}
-	} myobject;
+    vector<Transaction> transactions = allTransactions;
+    struct myclass {
+        bool operator() (Transaction i, Transaction j) { return (i.getName().compare(j.getName()) < 0);}
+    } myobject;
 
-	sort(transactions.begin() , transactions.end() , myobject);
+    sort(transactions.begin() , transactions.end() , myobject);
 
-	int gap = 1;
-	bool reOccurance;
-	int length = transactions.size();
-	for (int i = 0; i < length; i += gap){
-		gap = 1;
-		reOccurance = false;
-		for (int j = i+1; j < length; j ++) {
-			if (transactions[i].getName()  == transactions[j].getName()){
-				gap++;
-				if (transactions[i].getDate().getDay() == transactions[j].getDate().getDay() && transactions[i].getAmount() == transactions[j].getAmount()){
-					reOccurance = true;
-				}else {
-					reOccurance = false;
-					for (int k = gap;  gap < length - i -1; k++){
-						if (transactions[i].getName()  == transactions[k].getName()){
-							gap++;
-						}else {
-							break;
-						}
-					}
-					break;
-				}
-			}
-		}
-		if (reOccurance) {
-			for (int j = 0; j < length; j++) {
-				if (allTransactions[j].getName().compare(transactions[i].getName()) == 0){
-					allTransactions[j].setOccurance(true);
-				}
-			}
-		}
-	}
+    int gap = 1;
+    bool reOccurance;
+    int length = transactions.size();
+    for (int i = 0; i < length; i += gap){
+        gap = 1;
+        reOccurance = false;
+        for (int j = i+1; j < length; j ++) {
+            if (transactions[i].getName()  == transactions[j].getName()){
+                gap++;
+                if (transactions[i].getDate().getDay() == transactions[j].getDate().getDay() && transactions[i].getAmount() == transactions[j].getAmount()){
+                    reOccurance = true;
+                }else {
+                    reOccurance = false;
+                    for (int k = gap;  gap < length - i -1; k++){
+                        if (transactions[i].getName()  == transactions[k].getName()){
+                            gap++;
+                        }else {
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        if (reOccurance) {
+            for (int j = 0; j < length; j++) {
+                if (allTransactions[j].getName().compare(transactions[i].getName()) == 0){
+                    allTransactions[j].setOccurance(true);
+                }
+            }
+        }
+    }
 }
 
 void Budget::updateReminders(){
-	vector<Transaction> transactions = allTransactions;
-	struct myclass {
-		bool operator() (Transaction i, Transaction j) { return (i.getDate().getDay() > j.getDate().getDay());}
-	} myobject;
+    vector<Transaction> transactions = allTransactions;
+    struct myclass {
+        bool operator() (Transaction i, Transaction j) { return (i.getDate().getDay() > j.getDate().getDay());}
+    } myobject;
 
-	sort(transactions.begin() , transactions.end() , myobject);
-	removeReoccurance(transactions);
-	int length = transactions.size();
-	for (int i = 0; i < length; i ++){
-		if (transactions[i].getOccurance()){
-			reminders.push_back(transactions[i]);
-		}
-	}
-	int lastDay = lastDate().getDay();
-	while(reminders.front().getDate().getDay() < lastDay){
-		reminders.push_back(reminders.front());
-		reminders.pop_front();
-	}
+    sort(transactions.begin() , transactions.end() , myobject);
+    removeReoccurance(transactions);
+    int length = transactions.size();
+    for (int i = 0; i < length; i ++){
+        if (transactions[i].getOccurance()){
+            reminders.push_back(transactions[i]);
+        }
+    }
+    int lastDay = lastDate().getDay();
+    while(reminders.front().getDate().getDay() < lastDay){
+        reminders.push_back(reminders.front());
+        reminders.pop_front();
+    }
 }
 
 vector<Transaction> Budget::removeReoccurance(vector<Transaction> input){
-	vector<Transaction> output = input;
-	int length = input.size();
-	int gap = 1;
-	for (int i = 0; i < length; i+= gap){
-		gap = 1;
-		for (int j = i+1; j < length; j++){
-			if (output[i].getName().compare(output[j].getName()) == 0 && output[j].getOccurance()){
-				output.erase(input.begin()+j);
-				length--;
-				j--;
-			}
-		}
-	}
-	return output;
+    vector<Transaction> output = input;
+    int length = input.size();
+    int gap = 1;
+    for (int i = 0; i < length; i+= gap){
+        gap = 1;
+        for (int j = i+1; j < length; j++){
+            if (output[i].getName().compare(output[j].getName()) == 0 && output[j].getOccurance()){
+                output.erase(input.begin()+j);
+                length--;
+                j--;
+            }
+        }
+    }
+    return output;
 }
 
 Date Budget::lastDate(){
-	vector<Transaction> transactions = allTransactions;
-	Date lastDate;
-	lastDate.setDay(0);
-	lastDate.setMonth(0);
-	lastDate.setYear(0);
-	int length = transactions.size();
-	for (int i = 0; i < length; i++){
-		if (lastDate.getYear() <= transactions[i].getDate().getYear() && lastDate.getMonth() <= transactions[i].getDate().getMonth() && lastDate.getDay() <= transactions[i].getDate().getDay()){
-			lastDate = transactions[i].getDate();
-		}
-	}
-	return lastDate;
+    vector<Transaction> transactions = allTransactions;
+    Date lastDate;
+    lastDate.setDay(0);
+    lastDate.setMonth(0);
+    lastDate.setYear(0);
+    int length = transactions.size();
+    for (int i = 0; i < length; i++){
+        if (lastDate.getYear() <= transactions[i].getDate().getYear() && lastDate.getMonth() <= transactions[i].getDate().getMonth() && lastDate.getDay() <= transactions[i].getDate().getDay()){
+            lastDate = transactions[i].getDate();
+        }
+    }
+    return lastDate;
 }
 
 //Allows a new transaction to be inputted manually
@@ -318,8 +383,9 @@ void Budget::addNewTransaction() {
     string inputString;
     string parseHelper;
     ofstream newFileData;
-    int userChoice;
+    string userChoice;
     string inputAmount;
+    int categoryChoice;
     bool validTransaction=false;
 
     //Gets input from the user
@@ -336,40 +402,45 @@ void Budget::addNewTransaction() {
     cout << "7. Insurance" << endl;
     cout << "8. Utilities" << endl;
     cout << "9. Other" << endl;
-    cin >> userChoice;
-    switch (userChoice) {
-        case 1:
-            newTransaction.setCategory("Housing");
-            break;
-        case 2:
-            newTransaction.setCategory("Entertainment");
-            break;
-        case 3:
-            newTransaction.setCategory("Food");
-            break;
-        case 4:
-            newTransaction.setCategory("Transportation");
-            break;
-        case 5:
-            newTransaction.setCategory("Medical");
-            break;
-        case 6:
-            newTransaction.setCategory("Clothing");
-            break;
-        case 7:
-            newTransaction.setCategory("Insurance");
-            break;
-        case 8:
-            newTransaction.setCategory("Utilities");
-            break;
-        case 9:
-            newTransaction.setCategory("Other");
-            break;
-        default:
-            cout << "Invalid selection" << endl;
-            exit(1);
+
+
+        categoryChoice = userCategoryChecker();
+            switch (categoryChoice) {
+                case 1:
+                    newTransaction.setCategory("Housing");
+                    break;
+                case 2:
+                    newTransaction.setCategory("Entertainment");
+                    break;
+                case 3:
+                    newTransaction.setCategory("Food");
+                    break;
+                case 4:
+                    newTransaction.setCategory("Transportation");
+                    break;
+                case 5:
+                    newTransaction.setCategory("Medical");
+                    break;
+                case 6:
+                    newTransaction.setCategory("Clothing");
+                    break;
+                case 7:
+                    newTransaction.setCategory("Insurance");
+                    break;
+                case 8:
+                    newTransaction.setCategory("Utilities");
+                    break;
+                case 9:
+                    newTransaction.setCategory("Other");
+                    break;
+                default:
+                    cout << "Invalid selection" << endl;
+
+
     }
-    do {
+
+
+    while(!validTransaction){
         cout << "Enter the amount of the transaction : " << endl;
         cin >> inputAmount;
         bool validTransactionEntry = transactionInputChecker(inputAmount);
@@ -379,15 +450,15 @@ void Budget::addNewTransaction() {
             validTransaction = true;
         }
         else{
-            cout << "Invalid entry, please a enter valid amount" << endl;
+            cout << "Invalid entry, please enter valid amount\n";
             validTransaction = false;
         }
-    }while(!validTransaction);
+    }
 
 
 
     cout << "Enter the date of the transaction (MM/DD/YYYY): " << endl;
-    cin >> inputString;
+    inputString = userDateChecker();
 
     //Saves transaction to the file
     newFileData.open(fileName, ios::app);
@@ -396,30 +467,30 @@ void Budget::addNewTransaction() {
 
 
     //Handles user adding dates with 1-digit months and days
-if (inputString[0] == '0') {
-inputString.erase(0, 1);
-}
+    if (inputString[0] == '0') {
+        inputString.erase(0, 1);
+    }
 //parseHelper is the month at this line
-parseHelper = inputString.substr(0, inputString.find('/'));
+    parseHelper = inputString.substr(0, inputString.find('/'));
 //Checks if there is an extra zero before converting parseHelper to an int
-if (parseHelper[0] == '0') {
-parseHelper.erase(0, 1);
-}
-int localMonth = stoi(parseHelper);
-inputString.erase(0, inputString.find('/') + 1);
+    if (parseHelper[0] == '0') {
+        parseHelper.erase(0, 1);
+    }
+    int localMonth = stoi(parseHelper);
+    inputString.erase(0, inputString.find('/') + 1);
 
 //parseHelper is day at this line
-parseHelper = inputString.substr(0, inputString.find('/'));
-if (parseHelper[0] == '0') {
-parseHelper.erase(0, 1);
-}
-int localDay = stoi(parseHelper);
-inputString.erase(0, inputString.find('/') + 1);
+    parseHelper = inputString.substr(0, inputString.find('/'));
+    if (parseHelper[0] == '0') {
+        parseHelper.erase(0, 1);
+    }
+    int localDay = stoi(parseHelper);
+    inputString.erase(0, inputString.find('/') + 1);
 //Sets the transaction date
-int localYear = stoi(inputString);
-newTransaction.setDate(localMonth, localDay, localYear);
+    int localYear = stoi(inputString);
+    newTransaction.setDate(localMonth, localDay, localYear);
 //Adds the transaction to the vector of transactions
-allTransactions.push_back(newTransaction);
+    allTransactions.push_back(newTransaction);
 /*
 updateReOccurance();
 updateReminders(); */
@@ -681,3 +752,4 @@ Budget::Budget(string inputName) {
     parseTransactionData();
 
 }
+
