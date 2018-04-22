@@ -4,32 +4,38 @@
 using namespace std;
 
 //Getter for transactionName
-string Transaction::getName() {
+string Transaction::getName()
+{
     return transactionName;
 }
 
 //Setter for transactionName
-void Transaction::setName(string newName) {
+void Transaction::setName(string newName)
+{
     transactionName = newName;
 }
 
 //Getter for transaction
-string Transaction::getCategory() {
+string Transaction::getCategory()
+{
     return categoryName;
 }
 
 //Setter for transaction
-void Transaction::setCategory(string newCategory) {
+void Transaction::setCategory(string newCategory)
+{
     categoryName = newCategory;
 }
 
 //Getter for transactionAmount
-double Transaction::getAmount() {
+double Transaction::getAmount()
+{
     return transactionAmount;
 }
 
 //Setter for transactionAmount
-void Transaction::setAmount(double newAmount) {
+void Transaction::setAmount(double newAmount)
+{
     if (newAmount >= 0) {
         transactionAmount = newAmount;
     } else {
@@ -38,27 +44,23 @@ void Transaction::setAmount(double newAmount) {
 }
 
 //Getter for date
-Date Transaction::getDate() {
+Date Transaction::getDate()
+{
     return transactionDate;
 }
 
 //Sets the date
-void Transaction::setDate(int month, int day, int year) {
+void Transaction::setDate(int month, int day, int year)
+{
 
     transactionDate.setMonth(month);
     transactionDate.setDay(day);
     transactionDate.setYear(year);
 }
 
-void Transaction::setOccurance(bool input){
-    reOccuring = input;
-}
-bool Transaction::getOccurance(){
-    return reOccuring;
-}
-
 //Transaction constructor
-Transaction::Transaction() {
+Transaction::Transaction()
+{
     transactionName = "";
     categoryName = "";
     transactionAmount = 0;
@@ -66,71 +68,93 @@ Transaction::Transaction() {
 }
 
 // Verifies that the transaction amount the user enters is a number
-string Budget:: transactionInputChecker() {
+string Budget:: transactionInputChecker()
+{
     string inputAmount;
     bool validTransaction;
 
-    do {
+    do
+    {
         getline(cin, inputAmount);
-        for (int i = 0; i < inputAmount.length(); i++) {
+        for (int i = 0; i < inputAmount.length(); i++)
+        {
             if (isdigit(inputAmount[i]) ||
-                inputAmount[i] == '.' && (inputAmount[i - 1] != '.' || inputAmount[i + 1] != '.')) {
+                inputAmount[i] == '.' && (inputAmount[i - 1] != '.' || inputAmount[i + 1] != '.'))
+            {
 
                 validTransaction = true;
-            } else {
+            }
+            else
+            {
                 cout << "Invalid entry, please enter valid amount" << endl;
                 validTransaction = false;
                 break;
             }
         }
 
-        if (validTransaction) {
+        if (validTransaction)
+        {
             validTransaction= true;
-        } else {
+        }
+        else
+        {
             validTransaction= false;
         }
-    }while(!validTransaction);
+    }
+    while(!validTransaction);
 
     return inputAmount;
 }
 
 //Checks if user enters a number when selecting menu options
-int Budget:: userInputChecker() {
+int Budget:: userInputChecker()
+{
     string userInput;
     int inputConverted;
     bool isNum;
     bool validEntry;
-    do{
-       getline(cin,userInput);
+    do
+    {
+        getline(cin,userInput);
         int length = userInput.length();
-        for (int i = 0; i < length; i++) {
-            if (isdigit(userInput[i])) {
+        for (int i = 0; i < length; i++)
+        {
+            if (isdigit(userInput[i]))
+            {
                 isNum = true;
 
-            } else {
+            }
+            else
+            {
                 cout << "Invalid entry. Please try again: " << endl;
                 isNum = false;
                 break;
             }
         }
-        if (!isNum) {
+        if (!isNum)
+        {
             validEntry = false;
 
-        } else {
+        }
+        else
+        {
             inputConverted = stoi(userInput);
             validEntry = true;
         }
 
-    }while(!validEntry);
+    }
+    while(!validEntry);
     return inputConverted;
 }
 
 //Checks that user inputs a valid date in (MM/DD/YYYY) format
-string Budget::userDateChecker() {
+string Budget::userDateChecker()
+{
     string date;
     bool validDate=false;
     bool leapYear;
-    while(!validDate) {
+    while(!validDate)
+    {
         getline(cin,date);
         date.erase(remove_if(date.begin(), date.end(), ::isspace), date.end());
         //accounts for single digit days and sigle digit months
@@ -160,33 +184,40 @@ string Budget::userDateChecker() {
         // checks if user inputs a valid date that is not a possible leap year day
         if (regex_search(date, match, regDate1) || regex_search(date, match, regDate2)
             || regex_search(date, match, regDate3) || regex_search(date, match, regDate4)
-                || regex_search(date,match,regDate5) || regex_search(date,match,regDate6)
-                || regex_search(date,match,regDate7) || regex_search(date,match,regDate8)
-                || regex_search(date,match,febDate) || regex_search(date,match,regDate9)) {
+            || regex_search(date,match,regDate5) || regex_search(date,match,regDate6)
+            || regex_search(date,match,regDate7) || regex_search(date,match,regDate8)
+            || regex_search(date,match,febDate) || regex_search(date,match,regDate9))
+        {
             validDate = true;
         }
-        else if(regex_search(date,match,leapYearDate)){
+        else if(regex_search(date,match,leapYearDate))
+        {
             int year = stoi(date.substr(6,9));
-            if(year % 4 == 0 && year % 100 !=0){
+            if(year % 4 == 0 && year % 100 !=0)
+            {
                 leapYear = true;
             }
-            else if((year % 4 == 0) && (year % 100 == 0) && (year % 400 == 0)){
+            else if((year % 4 == 0) && (year % 100 == 0) && (year % 400 == 0))
+            {
                 leapYear = true;
             }
-            else{
+            else
+            {
                 leapYear = false;
             }
 
-            if(leapYear == true){
+            if(leapYear == true)
+            {
                 validDate = true;
             }
-            else{
+            else
+            {
                 cout << "Invalid entry. Please enter a valid date (MM/DD/YYYY): ";
                 validDate = false;
             }
-
         }
-        else {
+        else
+        {
             cout << "Invalid entry. Please enter a valid date (MM/DD/YYYY): ";
             validDate = false;
         }
@@ -195,75 +226,93 @@ string Budget::userDateChecker() {
 }
 
 //Checks that user enters a number that corresponds with a category
-int Budget::userCategoryChecker() {
+int Budget::userCategoryChecker()
+{
     string userInput;
     int inputConverted;
     bool isNum = false;
     bool validEntry = false;
-    while(!validEntry){
+    while(!validEntry)
+    {
         getline(cin,userInput);
-        for (int i = 0; i < userInput.length(); i++) {
-            if (isdigit(userInput[i])) {
+        for (int i = 0; i < userInput.length(); i++)
+        {
+            if (isdigit(userInput[i]))
+            {
                 isNum = true;
 
-            } else {
+            }
+            else
+            {
                 cout << "Invalid input please try again: ";
                 isNum = false;
                 break;
             }
         }
 
-        if(isNum) {
+        if(isNum)
+        {
             inputConverted = stoi(userInput);
-            if (inputConverted >= 1 && inputConverted <= 9) {
+            if (inputConverted >= 1 && inputConverted <= 9)
+            {
                 validEntry = true;
-            } else {
+            }
+            else
+            {
                 validEntry = false;
             }
         }
         else
         {
-          validEntry = false;
+            validEntry = false;
         }
     }
     return inputConverted;
 }
 
-string Budget::transactionNameChecker(){
+string Budget::transactionNameChecker()
+{
     string transactionName;
     bool oneWord;
-    do{
-     getline(cin,transactionName);
-        for(int i = 0; i < transactionName.length();i++){
-            if(transactionName[i]==' '){
+    do
+    {
+        getline(cin,transactionName);
+        for(int i = 0; i < transactionName.length();i++)
+        {
+            if(transactionName[i]==' ')
+            {
                 cout << "Invalid name for transaction. Please enter a one word name: " << endl;
                 oneWord = false;
                 break;
             }
-            else{
+            else
+            {
                 oneWord = true;
             }
         }
 
-    }while(!oneWord);
+    }
+    while(!oneWord);
     return transactionName;
 }
 
-
-
 //Takes one line of data from the file and puts it into a Transaction object, then adds those objects to the vector
-void Budget::parseTransactionData() {
+void Budget::parseTransactionData()
+{
     string currentLine;
     string parseHelper;
     Transaction tempTransaction;
 
-    while (fileData.good()) {
-
+    while (fileData.good())
+    {
         getline(fileData, currentLine);
+
         //Prevents the function from crashing if there's a blank line
-        if(currentLine == ""){
+        if(currentLine == "")
+        {
             continue;
         }
+
         //parseHelper is the categoryName at this line
         parseHelper = currentLine.substr(0, currentLine.find(' '));
         tempTransaction.setCategory(parseHelper);
@@ -281,18 +330,24 @@ void Budget::parseTransactionData() {
 
         //parseHelper is the month at this line
         parseHelper = currentLine.substr(0, currentLine.find('/'));
+
         //Checks if there is an extra zero before converting parseHelper to an int
-        if (parseHelper[0] == '0') {
+        if (parseHelper[0] == '0')
+        {
             parseHelper.erase(0, 1);
         }
+
         int localMonth = stoi(parseHelper);
         currentLine.erase(0, currentLine.find('/') + 1);
 
         //parseHelper is day at this line
         parseHelper = currentLine.substr(0, currentLine.find('/'));
-        if (parseHelper[0] == '0') {
+
+        if (parseHelper[0] == '0')
+        {
             parseHelper.erase(0, 1);
         }
+
         int localDay = stoi(parseHelper);
         currentLine.erase(0, currentLine.find('/') + 1);
         //Sets the transaction date
@@ -300,18 +355,22 @@ void Budget::parseTransactionData() {
         tempTransaction.setDate(localMonth, localDay, localYear);
         //Adds the transaction to the budget
         allTransactions.push_back(tempTransaction);
+
         //Adds the transaction to its respective month
-        if (localMonth == 4) {
+        if (localMonth == 4)
+        {
             aprilTransactions.push_back(tempTransaction);
         }
-        if (localMonth == 5) {
+        if (localMonth == 5)
+        {
             mayTransactions.push_back(tempTransaction);
         }
     }
 }
 
 //Parses an existing budget file to get the user's spending limit
-void Budget::parseQuotaData(string quotaName) {
+void Budget::parseQuotaData(string quotaName)
+{
 
     string currentLine;
     string parseHelper;
@@ -321,7 +380,8 @@ void Budget::parseQuotaData(string quotaName) {
     ifstream quotaFile;
     quotaFile.open(quotaName);
     //Parses through the budget file and puts the data into allQuotas
-    while (quotaFile.good()) {
+    while (quotaFile.good())
+    {
 
         getline(quotaFile, currentLine);
 
@@ -340,24 +400,33 @@ void Budget::parseQuotaData(string quotaName) {
 }
 
 //Gets all the transactions for use in sorting
-vector<Transaction> Budget::getAllTransactions() {
-    if (!allTransactions.empty()) {
+vector<Transaction> Budget::getAllTransactions()
+{
+    if (!allTransactions.empty())
+    {
         return allTransactions;
-    } else {
+    }
+    else
+        {
         cout << "Error: no transactions" << endl;
     }
 }
 
-vector<Quota> Budget::getAllQuotas() {
-    if (!allQuotas.empty()) {
+vector<Quota> Budget::getAllQuotas()
+{
+    if (!allQuotas.empty())
+    {
         return allQuotas;
-    } else {
+    }
+    else
+        {
         cout << "Error: no quotas" << endl;
     }
 }
 
 //Puts all transaction amounts into a single vector for use in graphing
-vector<int> Budget::getTransactionAmounts(){
+vector<int> Budget::getTransactionAmounts()
+{
     vector<int> transactionAmounts;
     vector<string> categoryNames;
     int total = 0;
@@ -371,9 +440,12 @@ vector<int> Budget::getTransactionAmounts(){
     categoryNames.push_back("Utilities");
     categoryNames.push_back("Other");
 
-    for (int i = 0; i < categoryNames.size(); i++) {
-        for (int j = 0; j < allTransactions.size(); j++) {
-            if ((allTransactions[j].getCategory())==(categoryNames[i])) {
+    for (int i = 0; i < categoryNames.size(); i++)
+    {
+        for (int j = 0; j < allTransactions.size(); j++)
+        {
+            if ((allTransactions[j].getCategory())==(categoryNames[i]))
+            {
                 total = total + allTransactions[j].getAmount();
             }
         }
@@ -383,16 +455,21 @@ vector<int> Budget::getTransactionAmounts(){
 
     return transactionAmounts;
 }
+
 //Gets the total quota amount for use in graphing
-int Budget::getTransactionsTotal() {
+int Budget::getTransactionsTotal()
+{
     int transactionsTotal = 0;
-    for (int i = 0; i < allTransactions.size(); i++) {
+    for (int i = 0; i < allTransactions.size(); i++)
+    {
         transactionsTotal += allTransactions[i].getAmount();
     }
     return transactionsTotal;
 }
+
 //Puts all category names into a single vector for use in graphing
-vector<string> Budget::getCategoryNames(){
+vector<string> Budget::getCategoryNames()
+{
     vector<string> categoryNames;
     categoryNames.emplace_back("Housing");
     categoryNames.emplace_back("Entertainment");
@@ -407,109 +484,14 @@ vector<string> Budget::getCategoryNames(){
     return categoryNames;
 }
 
-string Budget::getQuotaName(){
+string Budget::getQuotaName()
+{
     return quotaName;
-}
-void Budget::setQuotaName(string newName) {
-    quotaName = newName;
-}
-void Budget::updateReOccurance() {
-    vector<Transaction> transactions = allTransactions;
-    struct myclass {
-        bool operator() (Transaction i, Transaction j) { return (i.getName().compare(j.getName()) < 0);}
-    } myobject;
-
-    sort(transactions.begin() , transactions.end() , myobject);
-
-    int gap = 1;
-    bool reOccurance;
-    int length = transactions.size();
-    for (int i = 0; i < length; i += gap){
-        gap = 1;
-        reOccurance = false;
-        for (int j = i+1; j < length; j ++) {
-            if (transactions[i].getName()  == transactions[j].getName()){
-                gap++;
-                if (transactions[i].getDate().getDay() == transactions[j].getDate().getDay() && transactions[i].getAmount() == transactions[j].getAmount()){
-                    reOccurance = true;
-                }else {
-                    reOccurance = false;
-                    for (int k = gap;  gap < length - i -1; k++){
-                        if (transactions[i].getName()  == transactions[k].getName()){
-                            gap++;
-                        }else {
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-        if (reOccurance) {
-            for (int j = 0; j < length; j++) {
-                if (allTransactions[j].getName().compare(transactions[i].getName()) == 0){
-                    allTransactions[j].setOccurance(true);
-                }
-            }
-        }
-    }
-}
-
-void Budget::updateReminders(){
-    vector<Transaction> transactions = allTransactions;
-    struct myclass {
-        bool operator() (Transaction i, Transaction j) { return (i.getDate().getDay() > j.getDate().getDay());}
-    } myobject;
-
-    sort(transactions.begin() , transactions.end() , myobject);
-    removeReoccurance(transactions);
-    int length = transactions.size();
-    for (int i = 0; i < length; i ++){
-        if (transactions[i].getOccurance()){
-            reminders.push_back(transactions[i]);
-        }
-    }
-    int lastDay = lastDate().getDay();
-    while(reminders.front().getDate().getDay() < lastDay){
-        reminders.push_back(reminders.front());
-        reminders.pop_front();
-    }
-}
-
-vector<Transaction> Budget::removeReoccurance(vector<Transaction> input){
-    vector<Transaction> output = input;
-    int length = input.size();
-    int gap = 1;
-    for (int i = 0; i < length; i+= gap){
-        gap = 1;
-        for (int j = i+1; j < length; j++){
-            if (output[i].getName().compare(output[j].getName()) == 0 && output[j].getOccurance()){
-                output.erase(input.begin()+j);
-                length--;
-                j--;
-            }
-        }
-    }
-    return output;
-}
-
-Date Budget::lastDate(){
-    vector<Transaction> transactions = allTransactions;
-    Date lastDate;
-    lastDate.setDay(0);
-    lastDate.setMonth(0);
-    lastDate.setYear(0);
-    int length = transactions.size();
-    for (int i = 0; i < length; i++){
-        if (lastDate.getYear() <= transactions[i].getDate().getYear() && lastDate.getMonth() <= transactions[i].getDate().getMonth() && lastDate.getDay() <= transactions[i].getDate().getDay()){
-            lastDate = transactions[i].getDate();
-        }
-    }
-    return lastDate;
 }
 
 //Allows a new transaction to be inputted manually
-void Budget::addNewTransaction() {
+void Budget::addNewTransaction()
+{
     //Initializes necessary variables to handle the transaction
     Transaction newTransaction;
     string inputString;
@@ -535,44 +517,41 @@ void Budget::addNewTransaction() {
     cout << "9. Other" << endl;
 
 
-        categoryChoice = userCategoryChecker();
-            switch (categoryChoice) {
-                case 1:
-                    newTransaction.setCategory("Housing");
-                    break;
-                case 2:
-                    newTransaction.setCategory("Entertainment");
-                    break;
-                case 3:
-                    newTransaction.setCategory("Food");
-                    break;
-                case 4:
-                    newTransaction.setCategory("Transportation");
-                    break;
-                case 5:
-                    newTransaction.setCategory("Medical");
-                    break;
-                case 6:
-                    newTransaction.setCategory("Clothing");
-                    break;
-                case 7:
-                    newTransaction.setCategory("Insurance");
-                    break;
-                case 8:
-                    newTransaction.setCategory("Utilities");
-                    break;
-                case 9:
-                    newTransaction.setCategory("Other");
-                    break;
-                default:
-                    cout << "Invalid selection" << endl;
-
-
+    categoryChoice = userCategoryChecker();
+    switch (categoryChoice)
+    {
+        case 1:
+            newTransaction.setCategory("Housing");
+            break;
+        case 2:
+            newTransaction.setCategory("Entertainment");
+            break;
+        case 3:
+            newTransaction.setCategory("Food");
+            break;
+        case 4:
+            newTransaction.setCategory("Transportation");
+            break;
+        case 5:
+            newTransaction.setCategory("Medical");
+            break;
+        case 6:
+            newTransaction.setCategory("Clothing");
+            break;
+        case 7:
+            newTransaction.setCategory("Insurance");
+            break;
+        case 8:
+            newTransaction.setCategory("Utilities");
+            break;
+        case 9:
+            newTransaction.setCategory("Other");
+            break;
+        default:
+            cout << "Invalid selection" << endl;
     }
 
-
-
-        cout << "Enter the amount of the transaction : " << endl;
+    cout << "Enter the amount of the transaction : " << endl;
     inputAmount = transactionInputChecker();
     double finalinputAmount = stod(inputAmount);
     newTransaction.setAmount(finalinputAmount);
@@ -587,13 +566,15 @@ void Budget::addNewTransaction() {
 
 
     //Handles user adding dates with 1-digit months and days
-    if (inputString[0] == '0') {
+    if (inputString[0] == '0')
+    {
         inputString.erase(0, 1);
     }
 //parseHelper is the month at this line
     parseHelper = inputString.substr(0, inputString.find('/'));
 //Checks if there is an extra zero before converting parseHelper to an int
-    if (parseHelper[0] == '0') {
+    if (parseHelper[0] == '0')
+    {
         parseHelper.erase(0, 1);
     }
     int localMonth = stoi(parseHelper);
@@ -601,7 +582,8 @@ void Budget::addNewTransaction() {
 
 //parseHelper is day at this line
     parseHelper = inputString.substr(0, inputString.find('/'));
-    if (parseHelper[0] == '0') {
+    if (parseHelper[0] == '0')
+    {
         parseHelper.erase(0, 1);
     }
     int localDay = stoi(parseHelper);
@@ -615,7 +597,8 @@ void Budget::addNewTransaction() {
 
 
 //Allows a transaction to be deleted
-void Budget::deleteTransaction() {
+void Budget::deleteTransaction()
+{
     string inputName;
     string inputDate;
     Budget functionBudget("account.txt");
@@ -625,12 +608,13 @@ void Budget::deleteTransaction() {
     cout << "What transaction should be deleted? (One Word)" << endl;
     inputName = transactionNameChecker();
     cout << "When was this transaction (MM/DD/YYYY)?" << endl;
-   inputDate = userDateChecker();
+    inputDate = userDateChecker();
 
     ofstream functionFile("account.txt");
 
     //Handles zeroes in the inputDate
-    if (inputDate[0] == '0') {
+    if (inputDate[0] == '0')
+    {
         inputDate.erase(0, 1);
         if (inputDate[2] == '0') {
             string dateHelper;
@@ -642,7 +626,8 @@ void Budget::deleteTransaction() {
             inputDate = dateHelper;
         }
     }
-    if (inputDate[3] == '0') {
+    if (inputDate[3] == '0')
+    {
         string dateHelper;
         dateHelper += inputDate[0];
         dateHelper += inputDate[1];
@@ -655,6 +640,7 @@ void Budget::deleteTransaction() {
 
     //Writes all transactions to the file except the one to be deleted
     for (int i = 0; i < functionTransactions.size() - 1; i++) {
+
         if (functionTransactions[i].getName().find(inputName) == string::npos ||
             (functionTransactions[i].getDate().toString() != inputDate &&
              functionTransactions[i].getName().find(inputName) != string::npos)) {
@@ -663,10 +649,12 @@ void Budget::deleteTransaction() {
                          functionTransactions[i].getDate().toString() << endl;
         }
     }
+
     //Prevents an extra newline at the end of the file
     if (functionTransactions[functionTransactions.size() - 1].getName().find(inputName) ==
         string::npos || (functionTransactions[functionTransactions.size() - 1].getDate().toString() != inputDate &&
-                         functionTransactions[functionTransactions.size() - 1].getName().find(inputName) != string::npos)) {
+                         functionTransactions[functionTransactions.size() - 1].getName().find(inputName) != string::npos))
+    {
         //functionTransactions[functionTransactions.size() - 1].getName() == inputName)) {
         functionFile << functionTransactions[functionTransactions.size() - 1].getCategory() << " | "
                      << functionTransactions[functionTransactions.size() - 1].getName() << " $"
@@ -678,7 +666,8 @@ void Budget::deleteTransaction() {
 }
 
 //Saves sorted Transactions
-void Budget::saveTransactions(vector<Transaction> saveVector) {
+void Budget::saveTransactions(vector<Transaction> saveVector)
+{
     fileData.close();
     ofstream saveFile(fileName);
     //Writes content from the vector into the file
@@ -694,12 +683,14 @@ void Budget::saveTransactions(vector<Transaction> saveVector) {
     saveFile.close();
 }
 //Closes the file
-void Budget::closeFile() {
+void Budget::closeFile()
+{
     fileData.close();
 }
 
 //Creates a new budget file
-void Budget::createBudget() {
+void Budget::createBudget()
+{
     //Keeps track of the user's input
     string budgetName;
     int userSpending;
@@ -745,7 +736,8 @@ void Budget::createBudget() {
 }
 
 //Changes an existing Budget file
-void Budget::changeBudget() {
+void Budget::changeBudget()
+{
     string budgetName;
     int userChoice;
     string editCategory;
@@ -760,7 +752,8 @@ void Budget::changeBudget() {
     quotaName = budgetName;
     ifstream budgetFile;
     budgetFile.open(budgetName);
-    if (!budgetFile) {
+    if (!budgetFile)
+    {
         cout << "Budget not found" << endl;
         return;
     }
@@ -776,7 +769,8 @@ void Budget::changeBudget() {
     cout << "8. Utilities" << endl;
     cout << "9. Other" << endl;
     cin >> userChoice;
-    switch (userChoice) {
+    switch (userChoice)
+    {
         case 1:
             editCategory = "Housing";
             break;
@@ -814,7 +808,8 @@ void Budget::changeBudget() {
     Quota tempQuota;
 
     //Parses through the budget file and puts the data into functionQuota
-    while (budgetFile.good()) {
+    while (budgetFile.good())
+    {
 
         getline(budgetFile, currentLine);
 
@@ -825,7 +820,8 @@ void Budget::changeBudget() {
 
         //parseHelper is the spending limit at this line
         tempQuota.setSpendLimit(stoi(currentLine));
-        if(tempQuota.getCategory() == editCategory){
+        if(tempQuota.getCategory() == editCategory)
+        {
             tempQuota.setCategory(editCategory);
             tempQuota.setSpendLimit(userChoice);
         }
@@ -837,7 +833,8 @@ void Budget::changeBudget() {
     ofstream budgetWrite;
     budgetWrite.open(budgetName);
 
-    for (int i = 0; i < functionQuota.size()-1; i++) {
+    for (int i = 0; i < functionQuota.size()-1; i++)
+    {
         budgetWrite << functionQuota[i].getCategory() << " | " << functionQuota[i].getSpendLimit() << endl;
     }
     //Prevents an extra newline character at the end of the file
@@ -847,7 +844,8 @@ void Budget::changeBudget() {
 
 }
 //Allows the user to use an existing budget
-void Budget::useBudget() {
+void Budget::useBudget()
+{
     string budgetName;
     cout << "What is your existing budget called?" << endl;
 
@@ -857,17 +855,17 @@ void Budget::useBudget() {
     quotaName = budgetName;
     fstream budgetFile;
     budgetFile.open(budgetName);
-    if (!budgetFile) {
+    if (!budgetFile)
+    {
         cout << "Budget not found" << endl;
     }
     parseQuotaData(budgetName);
 }
 
 //Budget constructor
-Budget::Budget(string inputName) {
+Budget::Budget(string inputName)
+{
     fileData.open(inputName);
     fileName = inputName;
     parseTransactionData();
-
 }
-
