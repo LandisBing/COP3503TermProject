@@ -434,8 +434,7 @@ void Budget::addNewTransaction() {
     cout << "8. Utilities" << endl;
     cout << "9. Other" << endl;
 
-
-        categoryChoice = userCategoryChecker();
+    cin >> categoryChoice;
             switch (categoryChoice) {
                 case 1:
                     newTransaction.setCategory("Housing");
@@ -489,7 +488,7 @@ void Budget::addNewTransaction() {
 
 
     cout << "Enter the date of the transaction (MM/DD/YYYY): " << endl;
-    inputString = userDateChecker();
+    cin >> inputString;
 
     //Saves transaction to the file
     newFileData.open(fileName, ios::app);
