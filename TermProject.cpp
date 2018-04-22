@@ -191,8 +191,8 @@ int main() {
                     //Graph code
                     mainGraph.setMoney(mainBudget.getTransactionAmounts());
                     mainGraph.setCats(mainBudget.getCategoryNames());
-                    mainGraph.setBudget(mainBudget.getQuotaTotal());
-                    mainGraph.setRatio(mainGraph.cropData(mainGraph.ratioData()));
+                    mainGraph.setBudget(mainBudget.getTransactionsTotal());
+                    mainGraph.setRatio(mainGraph.ratioData());
                     mainGraph.printGraph();
 
                     break;
