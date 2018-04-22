@@ -1,4 +1,3 @@
-
 #ifndef BUDGET_QUOTA_H
 #define BUDGET_QUOTA_H
 
@@ -6,7 +5,8 @@
 
 using namespace std;
 
-class Quota {
+class Quota
+{
 private:
     int spendLimit;
     string category;

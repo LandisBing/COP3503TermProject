@@ -25,16 +25,6 @@ string Date::toString()
     return to_string(this->month) + "/" + to_string(this->day) + "/" + to_string(this->year);
 }
 
-int Date::getDay(){
-	return day;
-}
-int Date::getMonth(){
-	return month;
-}
-int Date::getYear(){
-	return year;
-}
-
 //Default constructor
 Date::Date()
 {
@@ -67,27 +57,42 @@ int Date::compareTo(Date other)const
         return -1;
     }
 }
+
 //Checks if day is valid and sets it
-void Date::setDay(int newDay) {
-    if (newDay >= 1 && newDay <= 31) {
+void Date::setDay(int newDay)
+{
+    if (newDay >= 1 && newDay <= 31)
+    {
         this->day = newDay;
-    } else {
+    }
+    else
+    {
         cout << "Invalid Day" << endl;
     }
 }
+
 //Checks if month is valid and sets it
-void Date::setMonth(int newMonth) {
-    if (newMonth >= 1 && newMonth <= 12) {
+void Date::setMonth(int newMonth)
+{
+    if (newMonth >= 1 && newMonth <= 12)
+    {
         this->month = newMonth;
-    } else {
+    }
+    else
+    {
         cout << "Invalid Month" << endl;
     }
 }
+
 //Checks if year is valid and sets it
-void Date::setYear(int newYear) {
-    if (newYear >= 1) {
+void Date::setYear(int newYear)
+{
+    if (newYear >= 1)
+    {
         this->year = newYear;
-    } else {
+    }
+    else
+    {
         cout << "Invalid Year" << endl;
     }
 }

@@ -36,310 +36,276 @@ struct Expense
 
 class Category
 {
-    public:
-        string name;
-        int budgetAmount = 0;
-        vector<Expense> expenseVec;
-        int percent = 0;
+public:
+    string name;
+    int budgetAmount = 0;
+    vector<Expense> expenseVec;
+    int percent = 0;
 
-        void setBudgetAmount(int x)
+    void setBudgetAmount(int x)
+    {
+        budgetAmount = x;
+    }
+
+    void setCategoryName(string catName)
+    {
+        name = catName;
+    }
+
+    //prints category and their expenses
+    string toString()
+    {
+        string printCategory;
+        printCategory = this->name + "\t$" + to_string(budgetAmount) + "\t" + to_string(percent) + "%" + "\n";
+
+        for (auto expense : expenseVec)
         {
-            budgetAmount = x;
+            printCategory += "\t" + expense.toString() + "\n";
         }
+        return printCategory;
+    }
 
-        void setCategoryName(string catName)
+    //sorts all the expenses from either lowest to highest value or highest to lowest value
+    void sortByExpenseName(bool lowToHigh)
+    {
+        //looks at the beginning of the line all the way to the end and uses a lambda expression
+        //loops through all the expenses to see which order to sort in
+        //compares the current expense to the following expense
+        if (lowToHigh)
         {
-            name = catName;
+            sort(expenseVec.begin(), expenseVec.end(), [](const Expense& a, const Expense& b) -> bool {  return a.name.compare(b.name) < 0; });
         }
-
-        //prints category and their expenses
-        string toString()
+        else
         {
-            string printCategory;
-            printCategory = this->name + "\t$" + to_string(budgetAmount) + "\t" + to_string(percent) + "%" + "\n";
-
-            for (auto expense : expenseVec)
-            {
-                printCategory += "\t" + expense.toString() + "\n";
-            }
-            return printCategory;
+            sort(expenseVec.begin(), expenseVec.end(), [](const Expense& a, const Expense& b) -> bool {  return a.name.compare(b.name) > 0; });
         }
+    }
 
-        //sorts all the expenses from either lowest to highest value or highest to lowest value
-        void sortByExpenseName(bool lowToHigh)
+    void sortByExpenseAmount(bool lowToHigh)
+    {
+        if (lowToHigh)
         {
-            //looks at the beginning of the line all the way to the end and uses a lambda expression
-            //loops through all the expenses to see which order to sort in
-            //compares the current expense to the following expense
-            if (lowToHigh)
-            {
-                sort(expenseVec.begin(), expenseVec.end(), [](const Expense& a, const Expense& b) -> bool {  return a.name.compare(b.name) < 0; });
-            }
-            else
-            {
-                sort(expenseVec.begin(), expenseVec.end(), [](const Expense& a, const Expense& b) -> bool {  return a.name.compare(b.name) > 0; });
-            }
+            sort(expenseVec.begin(), expenseVec.end(), [](const Expense& a, const Expense& b) -> bool {  return a.amount < b.amount; });
         }
-
-        void sortByExpenseAmount(bool lowToHigh)
+        else
         {
-            if (lowToHigh)
-            {
-                sort(expenseVec.begin(), expenseVec.end(), [](const Expense& a, const Expense& b) -> bool {  return a.amount < b.amount; });
-            }
-            else
-            {
-                sort(expenseVec.begin(), expenseVec.end(), [](const Expense& a, const Expense& b) -> bool {  return a.amount > b.amount; });
-            }
+            sort(expenseVec.begin(), expenseVec.end(), [](const Expense& a, const Expense& b) -> bool {  return a.amount > b.amount; });
         }
+    }
 
-        void sortByExpenseDate(bool lowToHigh)
+    void sortByExpenseDate(bool lowToHigh)
+    {
+        if (lowToHigh)
         {
-            if (lowToHigh)
-            {
-                sort(expenseVec.begin(), expenseVec.end(), [](const Expense& a, const Expense& b) -> bool {  return a.date.compareTo(b.date) < 0; });
-            }
-            else
-            {
-                sort(expenseVec.begin(), expenseVec.end(), [](const Expense& a, const Expense& b) -> bool {  return a.date.compareTo(b.date) > 0; });
-            }
+            sort(expenseVec.begin(), expenseVec.end(), [](const Expense& a, const Expense& b) -> bool {  return a.date.compareTo(b.date) < 0; });
         }
+        else
+        {
+            sort(expenseVec.begin(), expenseVec.end(), [](const Expense& a, const Expense& b) -> bool {  return a.date.compareTo(b.date) > 0; });
+        }
+    }
 };
 
 class BudgetManipulation
 {
-    public:
+public:
 
-        vector<Category> categoryVec;
+    vector<Category> categoryVec;
 
-        // total amount of money user has to spend
-        double totalBudget;
-        /*
-        the first percentage vector is the percentages per category
-        that the user would like to be spending
-        the second rPercentage is the real percentages per category that the user is spending based on the expenses
-        */
+    // total amount of money user has to spend
+    double totalBudget;
 
-        // vector of percentages based on inputted budget amount per category
-        vector<int> percentages;
+    // vector of percentages based on inputted budget amount per category
+    vector<int> percentages;
 
-        // vector of percentages based on expenses per category
-        vector<int> rPercentages;
+    //vector to get how much the budget is for each category
+    vector<Quota> quotaVec;
 
-        /*
-        vector telling user how much money she has left to spend or gone
-        over based on budget allowed per category, if value is negative it
-        means the user has spent that amount of money over the budget for
-        that category, if positive then that is amount left to spend for
-        that category.
-        */
-        vector<int> underOver;
+    vector<Transaction> transactionVec;
 
-        //vector to get how much the budget is for each category
-        vector<Quota> quotaVec;
+    explicit BudgetManipulation(string quotaName)
+    {
+        Budget myBudget("account.txt");
+        myBudget.parseQuotaData(quotaName);
+        this->transactionVec = myBudget.getAllTransactions();
+        this->quotaVec = myBudget.getAllQuotas();
+        setCategories();
+        setQuotas();
+        calcTotalBudget();
+        calculatePercentages();
+        setCatPercent();
+        setExpenses();
+    }
 
-        vector<Transaction> transactionVec;
+    string toString()
+    {
+        string printBudget;
 
-        explicit BudgetManipulation(string quotaName)
+        for (auto category : categoryVec)
         {
-            //this->myBudget = myBudget;
-            Budget myBudget("account.txt");
-            myBudget.parseQuotaData(quotaName);
-            this->transactionVec = myBudget.getAllTransactions();
-            this->quotaVec = myBudget.getAllQuotas();
-            setCategories();
-            setQuotas();
-            calcTotalBudget();
-            calculatePercentages();
-            setCatPercent();
-            setExpenses();
+            printBudget += category.toString() + "\n\n";
         }
+        return printBudget;
+    }
 
-        string toString()
+    void setCategories()
+    {
+        for (auto transactions : transactionVec)
         {
-            string printBudget;
+            string categoryName = transactions.getCategory();
 
-            for (auto category : categoryVec)
+            auto iterator = find_if(categoryVec.begin(), categoryVec.end(), [&categoryName](const Category& cat) {return cat.name == categoryName; });
+            if (iterator == categoryVec.end())
             {
-                printBudget += category.toString() + "\n\n";
-            }
-            return printBudget;
-        }
-
-        void setCategories()
-        {
-            for (auto transactions : transactionVec)
-            {
-                string categoryName = transactions.getCategory();
-
-                auto iterator = find_if(categoryVec.begin(), categoryVec.end(), [&categoryName](const Category& cat) {return cat.name == categoryName; });
-                if (iterator == categoryVec.end())
-                {
-                    Category category = Category();
-                    category.setCategoryName(categoryName);
-                    //makes new category
-                    categoryVec.push_back(category);
-                }
-                else
-                {
-                    (*iterator).setCategoryName(categoryName);
-                }
-            }
-        }
-
-        void setCatPercent()
-        {
-            for (int i = 0; i <= percentages.size(); i++)
-            {
-                categoryVec[i].percent = percentages[i];
-            }
-        }
-
-        void setExpenses()
-        {
-            for (auto transactions : transactionVec)
-            {
-                string categoryName = transactions.getCategory();
-                string expenseName = transactions.getName();
-                double expenseAmount = transactions.getAmount();
-                Date expenseDate = transactions.getDate();
-
-                Expense expense = Expense();
-                expense.setExpenseName(expenseName);
-                expense.setExpenseAmount(expenseAmount);
-                expense.setExpenseDate(expenseDate);
-
-                auto iterator = find_if(categoryVec.begin(), categoryVec.end(), [&categoryName](const Category& cat) {return cat.name == categoryName; });
-                if (iterator != categoryVec.end())
-                {
-                    (*iterator).expenseVec.push_back(expense);
-                }
-            }
-        }
-
-        void setQuotas()
-        {
-            for (int i = 0; i <= quotaVec.size(); i++)
-            {
-                categoryVec[i].setBudgetAmount(quotaVec[i].getSpendLimit());
-            }
-        }
-
-        //sums total budget of user based on budget amount for each category
-        void calcTotalBudget()
-        {
-            double sum = 0;
-            for (auto category : categoryVec)
-            {
-                sum += category.budgetAmount;
-            }
-            this->totalBudget = sum;
-        }
-
-        void sortByCategoryName(bool lowToHigh)
-        {
-            if (lowToHigh)
-            {
-                sort(categoryVec.begin(), categoryVec.end(), [](const Category& a, const Category& b) -> bool {  return a.name.compare(b.name) < 0; });
+                Category category = Category();
+                category.setCategoryName(categoryName);
+                //makes new category
+                categoryVec.push_back(category);
             }
             else
             {
-                sort(categoryVec.begin(), categoryVec.end(), [](const Category& a, const Category& b) -> bool {  return a.name.compare(b.name) > 0; });
+                (*iterator).setCategoryName(categoryName);
             }
         }
+    }
 
-        void sortByCategoryBudget(bool lowToHigh)
+    void setCatPercent()
+    {
+        for (int i = 0; i <= percentages.size(); i++)
         {
-            if (lowToHigh)
-            {
-                sort(categoryVec.begin(), categoryVec.end(), [](const Category& a, const Category& b) -> bool {  return a.budgetAmount < b.budgetAmount; });
-            }
-            else
-            {
-                sort(categoryVec.begin(), categoryVec.end(), [](const Category& a, const Category& b) -> bool {  return a.budgetAmount > b.budgetAmount; });
-            }
+            categoryVec[i].percent = percentages[i];
         }
+    }
 
-        void sortByCategoryPercentage(bool lowToHigh)
+    void setExpenses()
+    {
+        for (auto transactions : transactionVec)
         {
-            if (lowToHigh)
-            {
-                sort(categoryVec.begin(), categoryVec.end(), [](const Category& a, const Category& b) -> bool {  return a.percent < b.percent; });
-            }
-            else
-            {
-                sort(categoryVec.begin(), categoryVec.end(), [](const Category& a, const Category& b) -> bool {  return a.percent > b.percent; });
-            }
-        }
+            string categoryName = transactions.getCategory();
+            string expenseName = transactions.getName();
+            double expenseAmount = transactions.getAmount();
+            Date expenseDate = transactions.getDate();
 
-        void sortByExpensesName(bool lowToHigh)
-        {
-            for (auto & category : categoryVec)
-            {
-                category.sortByExpenseName(lowToHigh);
-            }
-        }
+            Expense expense = Expense();
+            expense.setExpenseName(expenseName);
+            expense.setExpenseAmount(expenseAmount);
+            expense.setExpenseDate(expenseDate);
 
-        void sortByExpensesAmount(bool lowToHigh)
-        {
-            for (auto & category : categoryVec)
+            auto iterator = find_if(categoryVec.begin(), categoryVec.end(), [&categoryName](const Category& cat) {return cat.name == categoryName; });
+            if (iterator != categoryVec.end())
             {
-                category.sortByExpenseAmount(lowToHigh);
+                (*iterator).expenseVec.push_back(expense);
             }
         }
+    }
 
-        void sortByExpensesDate(bool lowToHigh)
+    void setQuotas()
+    {
+        for (int i = 0; i <= quotaVec.size(); i++)
         {
-            for (auto & category : categoryVec)
-            {
-                category.sortByExpenseDate(lowToHigh);
-            }
+            categoryVec[i].setBudgetAmount(quotaVec[i].getSpendLimit());
         }
+    }
+    vector<Transaction> getSortedCategories()
+    {
+        vector<Transaction> sortedTranVec;
+        for(auto category: categoryVec)
+        {
+            for(auto expense: category.expenseVec)
+            {
+                Transaction tran;
+                tran.setCategory(category.name);
+                tran.setName(expense.name);
+                tran.setAmount(expense.amount);
+                auto date = expense.date;
+                tran.setDate(date.month, date.day, date.year);
 
-        /*
-        calculates percent of total budget used by each category based on
-        budget amount
-        */
-        void calculatePercentages()
-        {
-            for (auto category : categoryVec)
-            {
-                percentages.push_back(round(100 * (category.budgetAmount / totalBudget)));
+                sortedTranVec.push_back(tran);
             }
         }
+        return sortedTranVec;
+    }
 
-        /*
-        calculates percent of total budget used by each category based on
-        expenses for that category
-        */
-        void calculateRPercentages()
+    //sums total budget of user based on budget amount for each category
+    void calcTotalBudget()
+    {
+        double sum = 0;
+        for (auto category : categoryVec)
         {
-            for (auto category : categoryVec)
-            {
-                double amount = 0;
-                for (auto expense : category.expenseVec)
-                {
-                    amount += expense.amount;
-                }
-                rPercentages.push_back(round(100 * (amount / totalBudget)));
-            }
+            sum += category.budgetAmount;
         }
+        this->totalBudget = sum;
+    }
 
-        /*
-        calculates amount left to spend or amount gone over in each category
-        */
-        void calcHowMuchLeft()
+    void sortByCategoryName(bool lowToHigh)
+    {
+        if (lowToHigh)
         {
-            int amount;
-            for (auto category : categoryVec)
-            {
-                amount = 0;
-                for (auto expense : category.expenseVec)
-                {
-                    amount += expense.amount;
-                }
-                int left = category.budgetAmount - amount;
-                underOver.push_back(left);
-            }
+            sort(categoryVec.begin(), categoryVec.end(), [](const Category& a, const Category& b) -> bool {  return a.name.compare(b.name) < 0; });
         }
+        else
+        {
+            sort(categoryVec.begin(), categoryVec.end(), [](const Category& a, const Category& b) -> bool {  return a.name.compare(b.name) > 0; });
+        }
+    }
+
+    void sortByCategoryBudget(bool lowToHigh)
+    {
+        if (lowToHigh)
+        {
+            sort(categoryVec.begin(), categoryVec.end(), [](const Category& a, const Category& b) -> bool {  return a.budgetAmount < b.budgetAmount; });
+        }
+        else
+        {
+            sort(categoryVec.begin(), categoryVec.end(), [](const Category& a, const Category& b) -> bool {  return a.budgetAmount > b.budgetAmount; });
+        }
+    }
+
+    void sortByCategoryPercentage(bool lowToHigh)
+    {
+        if (lowToHigh)
+        {
+            sort(categoryVec.begin(), categoryVec.end(), [](const Category& a, const Category& b) -> bool {  return a.percent < b.percent; });
+        }
+        else
+        {
+            sort(categoryVec.begin(), categoryVec.end(), [](const Category& a, const Category& b) -> bool {  return a.percent > b.percent; });
+        }
+    }
+
+    void sortByExpensesName(bool lowToHigh)
+    {
+        for (auto & category : categoryVec)
+        {
+            category.sortByExpenseName(lowToHigh);
+        }
+    }
+
+    void sortByExpensesAmount(bool lowToHigh)
+    {
+        for (auto & category : categoryVec)
+        {
+            category.sortByExpenseAmount(lowToHigh);
+        }
+    }
+
+    void sortByExpensesDate(bool lowToHigh)
+    {
+        for (auto & category : categoryVec)
+        {
+            category.sortByExpenseDate(lowToHigh);
+        }
+    }
+
+    /*
+    calculates percent of total budget used by each category based on
+    budget amount
+    */
+    void calculatePercentages()
+    {
+        for (auto category : categoryVec)
+        {
+            percentages.push_back(round(100 * (category.budgetAmount / totalBudget)));
+        }
+    }
 };
