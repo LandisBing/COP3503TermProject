@@ -267,13 +267,44 @@ vector<Transaction> Budget::getAllTransactions() {
         cout << "Error: no transactions" << endl;
     }
 }
-
+//Gets all quotas
 vector<Quota> Budget::getAllQuotas() {
     if (!allQuotas.empty()) {
         return allQuotas;
     } else {
         cout << "Error: no quotas" << endl;
     }
+}
+//Puts all transaction amounts into a single vector for use in graphing
+vector<int> Budget::getTransactionAmounts(){
+    vector<int> transactionAmounts;
+    for (int i = 0; i < allTransactions.size(); i++) {
+        transactionAmounts.push_back(allTransactions[i].getAmount());
+    }
+    return transactionAmounts;
+}
+//Gets the total quota amount for use in graphing
+int Budget::getQuotaTotal() {
+    int quotaTotal = 0;
+    for (int i = 0; i < allQuotas.size(); i++) {
+        quotaTotal += allQuotas[i].getSpendLimit();
+    }
+    return quotaTotal;
+}
+//Puts all category names into a single vector for use in graphing
+vector<string> Budget::getCategoryNames(){
+    vector<string> categoryNames;
+    categoryNames.emplace_back("Housing");
+    categoryNames.emplace_back("Entertainment");
+    categoryNames.emplace_back("Food");
+    categoryNames.emplace_back("Transportation");
+    categoryNames.emplace_back("Medical");
+    categoryNames.emplace_back("Clothing");
+    categoryNames.emplace_back("Insurance");
+    categoryNames.emplace_back("Utilities");
+    categoryNames.emplace_back("Other");
+
+    return categoryNames;
 }
 string Budget::getQuotaName(){
     return quotaName;

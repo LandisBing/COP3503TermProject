@@ -74,7 +74,17 @@ public:
 
     int userInputChecker();
 
+    string userDateChecker();
+
+    int userCategoryChecker();
+
     vector<Quota> getAllQuotas();
+
+    vector<int> getTransactionAmounts();
+
+    int getQuotaTotal();
+
+    vector<string> getCategoryNames();
 
     string getQuotaName();
 

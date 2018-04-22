@@ -63,7 +63,6 @@ void welcomeMenu(Budget b) {
                 case 4:
                     exit(0);
 
-            
                 default:
                     cout << "Invalid input please try again";
                     validInput = false;
@@ -75,21 +74,16 @@ void welcomeMenu(Budget b) {
 
 
 int main() {
-
+    //Initializes a budget object to handle user's data
     Budget mainBudget("account.txt");
 
-    //this is how you use the graph code
-    BarGraph b;
-    UserInterface u;
-    Transaction t;
-    u.welcomeScreen();
+    //Initializes graph and interface code
+    BarGraph mainGraph;
+    UserInterface mainInterface;
+    //Prints the welcome screen
+    mainInterface.welcomeScreen();
 
-    vector<string> categoryList;
-    vector<int> moneyAmounts;
-
-    vector<int> graphMoney;
-    int totalBudget;
-
+    //Helps handle user behavior
     bool validInput = false;
 
     while (!validInput) {
@@ -195,12 +189,17 @@ int main() {
 
                 case 6:
                     //Graph code
+                    mainGraph.setMoney(mainBudget.getTransactionAmounts());
+                    mainGraph.setCats(mainBudget.getCategoryNames());
+                    mainGraph.setBudget(mainBudget.getQuotaTotal());
+                    mainGraph.setRatio(mainGraph.cropData(mainGraph.ratioData()));
+                    mainGraph.printGraph();
 
                     break;
 
                 case 7:
 
-                    u.closingScreen();
+                    mainInterface.closingScreen();
                     return 0;
 
                 default:
