@@ -123,6 +123,7 @@ int main() {
 
                 case 4:
                     //Ends the program
+                    mainInterface.closingScreen();
                     return 0;
 
                 default:
