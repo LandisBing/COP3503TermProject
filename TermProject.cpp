@@ -61,9 +61,9 @@ void welcomeMenu(Budget b) {
                     break;
 
                 case 4:
+                    exit(0);
 
-                    break;
-
+            
                 default:
                     cout << "Invalid input please try again";
                     validInput = false;
