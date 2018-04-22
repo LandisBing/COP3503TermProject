@@ -275,6 +275,58 @@ vector<Quota> Budget::getAllQuotas() {
         cout << "Error: no quotas" << endl;
     }
 }
+
+//Puts all transaction amounts into a single vector for use in graphing
+vector<int> Budget::getTransactionAmounts(){
+    vector<int> transactionAmounts;
+    vector<string> categoryNames;
+    int total = 0;
+    categoryNames.push_back("Housing");
+    categoryNames.push_back("Entertainment");
+    categoryNames.push_back("Food");
+    categoryNames.push_back("Transportation");
+    categoryNames.push_back("Medical");
+    categoryNames.push_back("Clothing");
+    categoryNames.push_back("Insurance");
+    categoryNames.push_back("Utilities");
+    categoryNames.push_back("Other");
+
+    for (int i = 0; i < categoryNames.size(); i++) {
+        for (int j = 0; j < allTransactions.size(); j++) {
+            if ((allTransactions[j].getCategory())==(categoryNames[i])) {
+                total = total + allTransactions[j].getAmount();
+            }
+        }
+        transactionAmounts.push_back(total);
+        total = 0;
+    }
+
+    return transactionAmounts;
+}
+//Gets the total quota amount for use in graphing
+int Budget::getTransactionsTotal() {
+    int transactionsTotal = 0;
+    for (int i = 0; i < allTransactions.size(); i++) {
+        transactionsTotal += allTransactions[i].getAmount();
+    }
+    return transactionsTotal;
+}
+//Puts all category names into a single vector for use in graphing
+vector<string> Budget::getCategoryNames(){
+    vector<string> categoryNames;
+    categoryNames.emplace_back("Housing");
+    categoryNames.emplace_back("Entertainment");
+    categoryNames.emplace_back("Food");
+    categoryNames.emplace_back("Transportation");
+    categoryNames.emplace_back("Medical");
+    categoryNames.emplace_back("Clothing");
+    categoryNames.emplace_back("Insurance");
+    categoryNames.emplace_back("Utilities");
+    categoryNames.emplace_back("Other");
+
+    return categoryNames;
+}
+
 string Budget::getQuotaName(){
     return quotaName;
 }
