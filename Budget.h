@@ -1,4 +1,3 @@
-
 #ifndef BUDGET_BUDGET_H
 #define BUDGET_BUDGET_H
 
@@ -19,7 +18,6 @@ private:
     string categoryName;
     double transactionAmount;
     Date transactionDate;
-    bool reOccuring;
 
 public:
     //Member functions
@@ -39,10 +37,6 @@ public:
 
     void setDate(int month, int day, int year);
 
-    bool getOccurance();
-
-    void setOccurance(bool reOccuring);
-
     Transaction();
 };
 
@@ -56,15 +50,6 @@ private:
     vector<Transaction> aprilTransactions;
     vector<Transaction> mayTransactions;
     vector<Quota> allQuotas;
-    deque<Transaction> reminders;
-    
-    void updateReOccurance();
-    
-    void updateReminders();
-    
-    vector<Transaction> removeReoccurance(vector<Transaction> input);
-    
-    Date lastDate();
 
 public:
 
@@ -89,8 +74,6 @@ public:
     vector<string> getCategoryNames();
 
     string getQuotaName();
-
-    void setQuotaName(string newName);
 
     void parseQuotaData(string quotaName);
 
