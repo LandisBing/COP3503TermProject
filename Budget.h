@@ -70,7 +70,9 @@ public:
 
     vector<Transaction> getAllTransactions();
 
-    bool transactionInputChecker(string userInput);
+    string transactionInputChecker();
+
+    string transactionNameChecker();
 
     int userInputChecker();
 
