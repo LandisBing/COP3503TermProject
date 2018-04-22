@@ -1,4 +1,4 @@
-#include "../Budget.h"
+#include "Budget.h"
 #include <algorithm>
 #include <regex>
 using namespace std;
@@ -78,7 +78,7 @@ string Budget:: transactionInputChecker() {
 
                 validTransaction = true;
             } else {
-                cout << "Invalid entry, please enter valid amount\n";
+                cout << "Invalid entry, please enter valid amount" << endl;
                 validTransaction = false;
                 break;
             }
@@ -108,7 +108,7 @@ int Budget:: userInputChecker() {
                 isNum = true;
 
             } else {
-                cout << "Invalid entry. Please try again: \n";
+                cout << "Invalid entry. Please try again: " << endl;
                 isNum = false;
                 break;
             }
@@ -229,14 +229,14 @@ int Budget::userCategoryChecker() {
     return inputConverted;
 }
 
-string Budget:: transactionNameChecker(){
+string Budget::transactionNameChecker(){
     string transactionName;
     bool oneWord;
     do{
      getline(cin,transactionName);
         for(int i = 0; i < transactionName.length();i++){
             if(transactionName[i]==' '){
-                cout << "Invalid name for transaction. Please enter a one word name: ";
+                cout << "Invalid name for transaction. Please enter a one word name: " << endl;
                 oneWord = false;
                 break;
             }
