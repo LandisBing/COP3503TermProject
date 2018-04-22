@@ -1,4 +1,4 @@
-#include "Budget.h"
+#include "../Budget.h"
 #include <algorithm>
 #include <regex>
 using namespace std;
@@ -65,87 +65,149 @@ Transaction::Transaction() {
     reOccuring = false;
 }
 
-bool Budget:: transactionInputChecker(string userInput){
-    bool isNum;
-    for (int i = 0; i < userInput.length(); i++) {
-        if (isdigit(userInput[i]) || userInput[i]=='.' && (userInput[i-1]!='.' || userInput[i+1]!='.') ) {
-            isNum = true;
-        }
-        else {
-            isNum = false;
-            break;
-        }
-    }
-    return isNum;
-}
+// Verifies that the transaction amount the user enters is a number
+string Budget:: transactionInputChecker() {
+    string inputAmount;
+    bool validTransaction;
 
-int Budget:: userInputChecker(){
-    string userInput;
-    int inputConverted;
-    bool isNum = false;
-    bool validEntry = false;
-    while(!validEntry){
-        cin >> userInput;
-        userInput.erase(remove_if(userInput.begin(), userInput.end(), ::isspace), userInput.end());
-        cout << userInput;
-        for (int i = 0; i < userInput.length(); i++) {
-            if (isdigit(userInput[i])) {
-                isNum = true;
+    do {
+        getline(cin, inputAmount);
+        for (int i = 0; i < inputAmount.length(); i++) {
+            if (isdigit(inputAmount[i]) ||
+                inputAmount[i] == '.' && (inputAmount[i - 1] != '.' || inputAmount[i + 1] != '.')) {
 
+                validTransaction = true;
             } else {
-                isNum = false;
+                cout << "Invalid entry, please enter valid amount\n";
+                validTransaction = false;
                 break;
             }
         }
 
-        if(!isNum){
-            cout << "Invalid entry. Please try again: \n";
-            validEntry = false;
+        if (validTransaction) {
+            validTransaction= true;
+        } else {
+            validTransaction= false;
         }
-        else{
+    }while(!validTransaction);
+
+    return inputAmount;
+}
+
+//Checks if user enters a number when selecting menu options
+int Budget:: userInputChecker() {
+    string userInput;
+    int inputConverted;
+    bool isNum;
+    bool validEntry;
+    do{
+       getline(cin,userInput);
+        int length = userInput.length();
+        for (int i = 0; i < length; i++) {
+            if (isdigit(userInput[i])) {
+                isNum = true;
+
+            } else {
+                cout << "Invalid entry. Please try again: \n";
+                isNum = false;
+                break;
+            }
+        }
+        if (!isNum) {
+            validEntry = false;
+
+        } else {
             inputConverted = stoi(userInput);
             validEntry = true;
         }
-    }
+
+    }while(!validEntry);
     return inputConverted;
 }
 
+//Checks that user inputs a valid date in (MM/DD/YYYY) format
 string Budget::userDateChecker() {
     string date;
     bool validDate=false;
+    bool leapYear;
     while(!validDate) {
-        cin >> date;
+        getline(cin,date);
         date.erase(remove_if(date.begin(), date.end(), ::isspace), date.end());
+        //accounts for single digit days and sigle digit months
+        regex regDate1 ("[0][1-9]/[0][1-9]/[^0][0-9]{3}");
+        //accounts for single digit days and double digit months
+        regex regDate2("[1][0-2]/[0][1-9]/[^0][0-9]{3}");
+        //accounts for single digit months with double digit days 10-29
+        regex regDate3 ("[0][^(0,2)]/[1-2][0-9]/[^0][0-9]{3}");
+        //accounts for double digit months with double digit days 10-29
+        regex regDate4 ("[1][0-2]/[1-2][0-9]/[^0][0-9]{3}");
+        //accounts for single digit months with 31 days
+        regex regDate5("[0][(1,3,5,7,8)]/[3][0-1]/[1-9][0-9]{3}");
+        //accounts for double digit months with 31 days;
+        regex regDate6("[1][(0,2)]/[3][0-1]/[1-9][0-9]{3}");
+        // accounts for single digit months with 30 days
+        regex regDate7("[0][4,6,9]/[3][0]/[1-9][0-9]{3}");
+        // accounts for double digit months with 30 days
+        regex regDate8 ("[1][1]/[3][0]/[1-9][0-9]{3}");
+        // accounts for possible leap year day
+        regex leapYearDate ("[0][2]/[2][9]/[1-9][0-9]{3}");
+        //handles dates in February
+        regex regDate9("[0][2]/[1][0-9]/[1-9][0-9]{3}");
+        regex febDate ("[0][2]/[2][0-8]/[1-9][0-9]{3}");
 
-        regex regDate1("[0][0-9]/[0-2][0-9]/[1-9][0-9]{3}");
-        regex regDate2("[0][0-9]/[3][0-1]/[1-9][0-9]{3}");
-        regex regDate3("[1][0-2]/[0-2][0-9]/[1-9][0-9]{3}");
-        regex regDate4("[1][0-2]/[3][0-1]/[1-9][0-9]{3}");
+
         smatch match;
+        // checks if user inputs a valid date that is not a possible leap year day
         if (regex_search(date, match, regDate1) || regex_search(date, match, regDate2)
-            || regex_search(date, match, regDate3) || regex_search(date, match, regDate4)) {
+            || regex_search(date, match, regDate3) || regex_search(date, match, regDate4)
+                || regex_search(date,match,regDate5) || regex_search(date,match,regDate6)
+                || regex_search(date,match,regDate7) || regex_search(date,match,regDate8)
+                || regex_search(date,match,febDate) || regex_search(date,match,regDate9)) {
             validDate = true;
-        } else {
-            cout << "Invalid entry. Please enter a valid date (MM/DD/YYYY)";
+        }
+        else if(regex_search(date,match,leapYearDate)){
+            int year = stoi(date.substr(6,9));
+            if(year % 4 == 0 && year % 100 !=0){
+                leapYear = true;
+            }
+            else if((year % 4 == 0) && (year % 100 == 0) && (year % 400 == 0)){
+                leapYear = true;
+            }
+            else{
+                leapYear = false;
+            }
+
+            if(leapYear == true){
+                validDate = true;
+            }
+            else{
+                cout << "Invalid entry. Please enter a valid date (MM/DD/YYYY): ";
+                validDate = false;
+            }
+
+        }
+        else {
+            cout << "Invalid entry. Please enter a valid date (MM/DD/YYYY): ";
             validDate = false;
         }
     }
     return date;
 }
 
-
+//Checks that user enters a number that corresponds with a category
 int Budget::userCategoryChecker() {
     string userInput;
     int inputConverted;
     bool isNum = false;
     bool validEntry = false;
     while(!validEntry){
-        cin >> userInput;
+        getline(cin,userInput);
         for (int i = 0; i < userInput.length(); i++) {
             if (isdigit(userInput[i])) {
                 isNum = true;
 
             } else {
+                cout << "Invalid input please try again: ";
                 isNum = false;
                 break;
             }
@@ -156,23 +218,41 @@ int Budget::userCategoryChecker() {
             if (inputConverted >= 1 && inputConverted <= 9) {
                 validEntry = true;
             } else {
-                cout << "\nInvalid input please try again: ";
                 validEntry = false;
             }
         }
         else
-        { cout << "\nInvalid input please try again: ";
+        {
           validEntry = false;
         }
     }
     return inputConverted;
 }
 
+string Budget:: transactionNameChecker(){
+    string transactionName;
+    bool oneWord;
+    do{
+     getline(cin,transactionName);
+        for(int i = 0; i < transactionName.length();i++){
+            if(transactionName[i]==' '){
+                cout << "Invalid name for transaction. Please enter a one word name: ";
+                oneWord = false;
+                break;
+            }
+            else{
+                oneWord = true;
+            }
+        }
+
+    }while(!oneWord);
+    return transactionName;
+}
+
 
 
 //Takes one line of data from the file and puts it into a Transaction object, then adds those objects to the vector
 void Budget::parseTransactionData() {
-
     string currentLine;
     string parseHelper;
     Transaction tempTransaction;
@@ -438,11 +518,10 @@ void Budget::addNewTransaction() {
     string userChoice;
     string inputAmount;
     int categoryChoice;
-    bool validTransaction=false;
 
     //Gets input from the user
     cout << "Enter the name of the transaction: (One word) " << endl;
-    cin >> inputString;
+    inputString = transactionNameChecker();
     newTransaction.setName(inputString);
     cout << "Select the category of the transaction: " << endl;
     cout << "1. Housing" << endl;
@@ -492,22 +571,11 @@ void Budget::addNewTransaction() {
     }
 
 
-    while(!validTransaction){
+
         cout << "Enter the amount of the transaction : " << endl;
-        cin >> inputAmount;
-        bool validTransactionEntry = transactionInputChecker(inputAmount);
-        if(validTransactionEntry) {
-            double finalinputAmount = stod(inputAmount);
-            newTransaction.setAmount(finalinputAmount);
-            validTransaction = true;
-        }
-        else{
-            cout << "Invalid entry, please enter valid amount\n";
-            validTransaction = false;
-        }
-    }
-
-
+    inputAmount = transactionInputChecker();
+    double finalinputAmount = stod(inputAmount);
+    newTransaction.setAmount(finalinputAmount);
 
     cout << "Enter the date of the transaction (MM/DD/YYYY): " << endl;
     inputString = userDateChecker();
@@ -543,11 +611,9 @@ void Budget::addNewTransaction() {
     newTransaction.setDate(localMonth, localDay, localYear);
 //Adds the transaction to the vector of transactions
     allTransactions.push_back(newTransaction);
-/*
-updateReOccurance();
-updateReminders(); */
-
 }
+
+
 //Allows a transaction to be deleted
 void Budget::deleteTransaction() {
     string inputName;
@@ -557,9 +623,9 @@ void Budget::deleteTransaction() {
     functionBudget.closeFile();
 
     cout << "What transaction should be deleted? (One Word)" << endl;
-    cin >> inputName;
+    inputName = transactionNameChecker();
     cout << "When was this transaction (MM/DD/YYYY)?" << endl;
-    cin >> inputDate;
+   inputDate = userDateChecker();
 
     ofstream functionFile("account.txt");
 
