@@ -130,7 +130,7 @@ private:
             cout << "\nWhich order do you want to sort in?\n"
                     "1. Low to High\n"
                     "2. High to low\n"
-                    "4. Back\n";
+                    "3. Back\n";
             cin >> choice;
 
             if (choice == 1)
