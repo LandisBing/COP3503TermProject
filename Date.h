@@ -3,7 +3,8 @@
 #include <string>
 
 using namespace std;
-struct Date {
+struct Date
+{
 
     int month;
     int day;
@@ -18,12 +19,6 @@ struct Date {
     string toString();
 
     int compareTo(Date other) const;
-
-    int getDay();
-
-    int getMonth();
-
-    int getYear();
 
     void setDay(int newDay);
 
