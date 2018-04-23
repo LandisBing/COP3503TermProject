@@ -100,7 +100,7 @@ int main()
         cout << "|================================|\n";
         cout << "|1. Print                        |\n";
         cout << "|--------------------------------|\n";
-        cout << "|2. Add expense or transcation   |\n";
+        cout << "|2. Add expense or transaction   |\n";
         cout << "|--------------------------------|\n";
         cout << "|3. Delete expense or transaction|\n";
         cout << "|--------------------------------|\n";
