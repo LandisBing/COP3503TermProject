@@ -1,8 +1,121 @@
-Housing | mortage $1567.99 | 04/01/2018
-Food | chiptole $9.50 | 04/03/2018
-Transportation | uber $3.00 | 04/05/2018
-Medical | broken arm $60.00 | 04/07/2018
-Housing | spoon $80.00 | 04/02/2018
-Clothing | marshalls $506.85 | 04/13/2018
-Housing | dining table $200.00 | 04/16/2018
-Transportation | lyft $20.89 | 04/25/2018
+Housing | mortage  $1567.99 | 4/1/2018
+Food | chiptole  $9.5 | 4/3/2018
+Transportation | uber  $3 | 4/5/2018
+Medical | broken arm  $60 | 4/7/2018
+Housing | spoon  $80 | 4/2/2018
+Clothing | marshalls  $506.85 | 4/13/2018
+Housing | dining table  $200 | 4/16/2018
+Transportation | lyft  $20.89 | 4/25/2018
+Clothing | tj max  $200.86 | 4/16/2018
+Medical | tylenol  $15.6 | 4/9/2018
+Entertainment | fair  $60.35 | 4/8/2018
+Food | subway  $7.34 | 4/3/2018
+Entertainment | circus  $105.56 | 4/6/2018
+Medical | eye drops  $60.56 | 4/25/2018
+Insurance | phone  $305.46 | 4/5/2018
+Food | chick Fil A  $25.36 | 4/26/2018
+Food | panda express  $8.09 | 4/14/2018
+Insurance | medical  $6020.45 | 4/23/2018
+Utilities | water/sewage  $105.35 | 4/23/2018
+Transportation | gas  $60.5 | 4/25/2018
+Transportation | lyft  $30.54 | 4/12/2018
+Housing | rug  $50 | 4/5/2018
+Medical | aleve  $20.45 | 4/25/2018
+Other | chairty  $49.62 | 4/26/2018
+Insurance | geico  $2 | 4/9/2018
+Entertainment | movies  $27.5 | 4/19/2018
+Transportation | airplane  $522.36 | 4/30/2018
+Housing | lamp  $12 | 4/23/2018
+Clothing | burlington  $26.3 | 4/30/2018
+Medical | nyquil  $25.6 | 4/28/2018
+Insurance | computer  $12.23 | 4/6/2018
+Entertainment | trampoline park  $45.6 | 4/23/2018
+Entertainment | video game  $60.99 | 4/19/2018
+Food | blaze  $18.85 | 4/25/2018
+Transportation | car  $522.96 | 4/23/2018
+Medical | dayquil  $18.6 | 4/3/2018
+Entertainment | hulu  $30.99 | 4/30/2018
+Other | haircut  $203.89 | 4/30/2018
+Medical | advil  $45.9 | 4/26/2018
+Clothing | payless  $3.45 | 4/25/2018
+Entertainment | spotify  $3.6 | 4/30/2018
+Other | notebook  $26.63 | 4/26/2018
+Insurance | life  $23156.6 | 4/17/2018
+Entertainment | video game  $59.62 | 4/5/2018
+Clothing | macys  $46.23 | 4/16/2018
+Other | vacation  $35068.3 | 4/23/2018
+Food | panda express  $8.09 | 4/14/2018
+Insurance | car  $1020 | 4/20/2018
+Utilities | gas  $60.5 | 4/20/2018
+Other | nails  $56.32 | 4/16/2018
+Transportation | uber  $49.53 | 4/10/2018
+Utilities | garbage  $80.62 | 4/26/2018
+Clothing | footlocker  $45.69 | 4/20/2018
+Food | bento  $45.96 | 4/20/2018
+Insurance | housing  $5260.78 | 4/30/2018
+Housing | couch  $400 | 4/20/2018
+Food | dominos  $20.55 | 4/26/2018
+Utilities | electricity  $50 | 4/26/2018
+Clothing | ross  $550 | 4/21/2018
+Other | phone  $699 | 4/23/2018
+Other | watch  $89.26 | 4/13/2018
+Entertainment | netflix  $12.35 | 4/18/2018
+Housing | mortage  $1567.99 | 5/1/2018
+Food | red lobster  $26.5 | 5/13/2018
+Transportation | uber  $15 | 5/23/2018
+Medical | broken leg  $120 | 5/17/2018
+Insurance | geico  $2 | 5/9/2018
+Food | fridays  $623.85 | 5/23/2018
+Entertainment | VR headseat  $12.6 | 5/4/2018
+Food | olive garden  $55.96 | 5/26/2018
+Housing | pillows  $300 | 5/26/2018
+Medical | blood transfusion  $18.45 | 5/5/2018
+Other | pullup bar  $63.32 | 5/24/2018
+Entertainment | netflix  $12.35 | 5/18/2018
+Medical | contacts  $306.56 | 5/6/2018
+Transportation | train  $20.99 | 5/23/2018
+Housing | lava lamp  $85 | 5/20/2018
+Medical | birth control  $60.9 | 5/8/2018
+Insurance | life  $23156.6 | 5/17/2018
+Entertainment | video game  $59.36 | 5/25/2018
+Transportation | gas  $40.5 | 5/15/2018
+Other | phone cable  $8.32 | 5/3/2018
+Insurance | car  $1020 | 5/20/2018
+Clothing | nordstrom  $34.23 | 5/30/2018
+Clothing | polo  $823.3 | 5/8/2018
+Food | red robin  $8.44 | 5/30/2018
+Medical | brain surgery  $16.6 | 5/16/2018
+Entertainment | hulu  $30.99 | 5/30/2018
+Clothing | old navy  $65.69 | 5/19/2018
+Insurance | medical  $6020.45 | 5/23/2018
+Other | gallium  $648.62 | 5/23/2018
+Clothing | gap  $200.86 | 5/16/2018
+Transportation | bus  $2.36 | 5/6/2018
+Insurance | computer  $12.23 | 5/6/2018
+Entertainment | movie  $103.56 | 5/30/2018
+Utilities | gas  $60.5 | 5/20/2018
+Housing | bed  $5050 | 5/6/2018
+Food | outback  $23.36 | 5/30/2018
+Clothing | nike  $560.45 | 5/29/2018
+Other | magnets  $16.63 | 5/16/2018
+Insurance | housing  $5260.78 | 5/30/2018
+Transportation | lyft  $96.54 | 5/2/2018
+Food | bahama breeze  $85.09 | 5/24/2018
+Housing | fork  $30 | 5/3/2018
+Insurance | phone  $305.46 | 5/5/2018
+Transportation | car  $522.96 | 5/23/2018
+Utilities | garbage  $80.62 | 5/26/2018
+Clothing | victoria secrets  $63.05 | 5/6/2018
+Other | headphones  $890.26 | 5/6/2018
+Entertainment | spotify  $3.6 | 5/30/2018
+Medical | lasik  $8236.52 | 5/3/2018
+Other | fireworks  $23.89 | 5/23/2018
+Food | krispy kreme  $60.55 | 5/15/2018
+Housing | chair  $560 | 5/5/2018
+Transportation | uber  $10.53 | 5/3/2018
+Medical | cosmetic surgery  $56320.6 | 5/16/2016
+Entertainment | movies  $16.5 | 5/29/2018
+Utilities | electricity  $50 | 5/26/2018
+Clothing | forever 21  $750 | 5/23/2018
+Other | toy  $96 | 5/3/2018
+Utilities | water/sewage  $105.35 | 5/23/2018
